@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- FORM VIEW -->
+    <record id="custom_employee_form" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.custom</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Matricule avant nom -->
+            <xpath expr="//field[@name='name']" position="before">
+                <label for="matricule" string="Matricule"/>
+                <field name="matricule"/>
+            </xpath>
+
+            <!-- Email privé editable -->
+            <xpath expr="//page[@name='personal_information']//field[@name='private_email']" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+
+            <!-- Gender options -->
+            <xpath expr="//page[@name='personal_information']//field[@name='gender']" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+            </xpath>
+
+            <!-- Emergency Contact 1/2 -->
+            <xpath expr="//group[@name='emergency']/field[@name='emergency_phone']" position="after">
+                <field name="family_link_id"/>
+
+                <separator string="Contact 2"/>
+                <field name="emergency_contact2"/>
+                <field name="emergency_phone2"/>
+                <field name="family_link_id2"/>
+            </xpath>
+
+            <!-- Ajout onglet documents -->
+            <xpath expr="//notebook" position="inside">
+                <page name="documents" string="Documents">
+                    <group>
+                        <field name="pdf_documents" widget="many2many_binary" accept="application/pdf"/>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- Téléphone perso custom (si besoin) -->
+            <xpath expr="//group[.//field[@name='mobile_phone']]" position="inside">
+                <field name="private_phone" widget="phone"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- PHONE sur res.partner -->
+    <!-- <record id="custom_partner_phone" model="ir.ui.view">
+        <field name="name">partner.form.inherit.phone</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='phone']" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='mobile']" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+        </field>
+    </record> -->
+
+    <!-- TREE VIEW -->
+    <record id="custom_employee_tree" model="ir.ui.view">
+        <field name="name">hr.employee.tree.inherit.custom</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="matricule"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- KANBAN -->
+   <!--  <record id="custom_employee_kanban" model="ir.ui.view">
+        <field name="name">hr.employee.kanban.inherit.custom</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//widget[@name='hr_employee_chat']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+        </field>
+    </record> -->
+
+</odoo>
