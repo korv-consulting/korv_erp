@@ -11,11 +11,11 @@
             </xpath>
 
             <xpath expr="//field[@name='partner_name']" position="attributes">
-                <attribute name="placeholder">Sam JACKSON</attribute>
+                <attribute name="placeholder">John MANSA</attribute>
             </xpath>
 
             <xpath expr="//field[@name='email_from']" position="attributes">
-                <attribute name="placeholder">samjackson@korv-consulting.fr</attribute>
+                <attribute name="placeholder">johnmansa@korv-consulting.fr</attribute>
             </xpath>
 
             <xpath expr="//field[@name='email_cc']" position="attributes">

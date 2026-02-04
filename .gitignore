@@ -1,14 +1,11 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
 
-# Virtual environment
+# Virtual environments ONLY
 venv/
-env/
-.venv/
 .env/
-*env/
+.venv/
 .korv_env/
 
 # Logs
@@ -16,41 +13,24 @@ env/
 log/
 logs/
 
-# Odoo specific runtime files
-*.swp
-*.swo
-*~
-.odoo*
+# Odoo runtime
 *.lock
 *.tmp
 *.bak
 
-# Compiled assets
+# Assets
 *.css.map
 *.js.map
 
-# Build / Distribution
-build/
-dist/
-
-# Node / Web assets
+# Node
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
-# Database dumps
+# DB dumps
 *.dump
 *.sql
-*.sqlite
-*.zip
 
-# Editor / IDE files
+# IDE / OS
 .vscode/
 .idea/
-*.sublime-project
-*.sublime-workspace
-
-# System files
 .DS_Store
 Thumbs.db
