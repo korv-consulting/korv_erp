@@ -25,10 +25,6 @@ logs/
 # Node
 node_modules/
 
-# DB dumps
-*.dump
-*.sql
-
 # IDE / OS
 .vscode/
 .idea/
