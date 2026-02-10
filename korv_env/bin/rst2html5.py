@@ -1,4 +1,4 @@
-#!/home/danson/Workspace/CRM/korv_erp/korv_env/bin/python3.10
+#!/home/carles/Documents/KORV ERP/korv_erp/korv_env/bin/python3.10
 # -*- coding: utf8 -*-
 # :Copyright: © 2015 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:

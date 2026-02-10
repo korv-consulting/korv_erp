@@ -1,4 +1,4 @@
-#!/home/danson/Workspace/CRM/korv_erp/korv_env/bin/python3.10
+#!/home/carles/Documents/KORV ERP/korv_erp/korv_env/bin/python3.10
 
 # $Id: rst2odt.py 5839 2009-01-07 19:09:28Z dkuhlman $
 # Author: Dave Kuhlman <dkuhlman@rexx.com>

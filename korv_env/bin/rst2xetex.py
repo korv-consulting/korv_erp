@@ -1,4 +1,4 @@
-#!/home/danson/Workspace/CRM/korv_erp/korv_env/bin/python3.10
+#!/home/carles/Documents/KORV ERP/korv_erp/korv_env/bin/python3.10
 
 # $Id: rst2xetex.py 7847 2015-03-17 17:30:47Z milde $
 # Author: Guenter Milde

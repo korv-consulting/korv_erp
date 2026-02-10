@@ -1,4 +1,4 @@
-#!/home/danson/Workspace/CRM/korv_erp/korv_env/bin/python3.10
+#!/home/carles/Documents/KORV ERP/korv_erp/korv_env/bin/python3.10
 
 ##############################################################################
 #
