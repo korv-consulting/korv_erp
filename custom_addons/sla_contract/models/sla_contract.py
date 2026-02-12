@@ -6,6 +6,14 @@ class SlaContract(models.Model):
     _description = 'SLA Contract'
     _order = 'create_date desc, id desc'
 
+    _sql_constraints = [
+        (
+            'sale_order_unique_sla',
+            'unique(sale_order_id)',
+            'Une commande ne peut avoir qu\'un seul SLA.',
+        ),
+    ]
+
     # Identification
     name = fields.Char(string='Référence SLA', required=True)
     sale_order_id = fields.Many2one(
