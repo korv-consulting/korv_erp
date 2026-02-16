@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Action de rapport PDF pour les contrats SLA -->
+   <record id="action_report_sla_contract_print" model="ir.actions.report">
+        <field name="name">Contrat SLA</field>
+        <field name="model">sla.contract</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sla_contract.report_sla_contract</field>
+        <field name="report_file">sla_contract.report_sla_contract</field>
+        <field name="print_report_name">'SLA-%s' % (object.name)</field>
+        <!-- Cette ligne lie le bouton Imprimer à votre vue sans conflit -->
+        <field name="binding_model_id" ref="model_sla_contract"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+    <!-- Gabarit QWeb du rapport SLA -->
+    <template id="report_sla_contract">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.internal_layout">
+                    <t t-set="title">Contrat SLA - <t t-esc="doc.name"/></t>
+                    <div class="page">
+                        <h2>Contrat de niveau de service (SLA)</h2>
+
+                        <p>
+                            <strong>Référence SLA :</strong>
+                            <span t-esc="doc.name"/>
+                        </p>
+                        <p>
+                            <strong>Commande liée :</strong>
+                            <span t-esc="doc.sale_order_id.name or '-'"/>
+                        </p>
+                        <p>
+                            <strong>Client :</strong>
+                            <span t-esc="doc.partner_id.display_name"/>
+                        </p>
+                        <p>
+                            <strong>Mission :</strong>
+                            <span t-esc="doc.mission_name or ''"/>
+                        </p>
+
+                        <h3>Période</h3>
+                        <p>
+                            <strong>Date de début :</strong>
+                            <span t-esc="doc.start_date or ''"/>
+                            &#160;&#160;
+
+                            <strong>Date de fin :</strong>
+                            <span t-esc="doc.end_date or ''"/>
+                        </p>
+                        <p>
+                            <strong>Statut :</strong>
+                            <span t-esc="doc.state"/>
+                        </p>
+
+                        <h3>Engagements SLA</h3>
+                        <p>
+                            <strong>Temps de réponse :</strong>
+                            <span t-esc="doc.response_time or 0.0"/> heures
+                        </p>
+                        <p>
+                            <strong>Temps de résolution :</strong>
+                            <span t-esc="doc.resolution_time or 0.0"/> heures
+                        </p>
+                        <p>
+                            <strong>Heures de support :</strong>
+                            <span t-esc="doc.support_hours"/>
+                        </p>
+
+                        <h3>Services couverts</h3>
+                        <p t-if="doc.scope">
+                            <t t-esc="doc.scope"/>
+                        </p>
+                        <p t-if="not doc.scope">
+                            (Non renseigné)
+                        </p>
+
+                        <h3>Exclusions</h3>
+                        <p t-if="doc.exclusions">
+                            <t t-esc="doc.exclusions"/>
+                        </p>
+                        <p t-if="not doc.exclusions">
+                            (Non renseigné)
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
+

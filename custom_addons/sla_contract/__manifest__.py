@@ -11,6 +11,7 @@
     'data': [
         'data/sla_cron.xml',
         'security/ir.model.access.csv',
+        'report/sla_contract_report.xml',
         'views/sla_contract_views.xml',
         'views/sale_order_views.xml',
     ],

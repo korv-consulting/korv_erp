@@ -60,7 +60,7 @@ class SaleOrder(models.Model):
             action['context'] = dict(self.env.context or {})
             return action
 
-        # Cas 3 : aucun SLA -> on ouvre un nouveau formulaire pré-rempli
+        # Cas 3 : aucun SLA don on ouvre un nouveau formulaire pré-rempli
         form_view = self.env.ref('sla_contract.view_sla_contract_form')
         action.update({
             'views': [(form_view.id, 'form')],
