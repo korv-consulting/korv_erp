@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_crm_company_size_user,access.crm.company_size.user,model_crm_company_size,,1,1,1,1
+access_crm_activity_area_user,access.crm.activity_area.user,model_crm_activity_area,,1,1,1,1
+access_crm_contract_type_user,access.crm.contract_type.user,model_crm_contract_type,,1,1,1,1

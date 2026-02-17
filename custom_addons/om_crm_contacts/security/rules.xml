@@ -1,0 +1,35 @@
+<odoo>
+    <record id="activity_area_all_rule" model="ir.rule">
+        <field name="name">Tous : accès à crm.activity_area</field>
+        <field name="model_id" ref="om_crm_contacts.model_crm_activity_area"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="company_size_all_rule" model="ir.rule">
+        <field name="name">Tous : accès à crm.company_size</field>
+        <field name="model_id" ref="om_crm_contacts.model_crm_company_size"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="contract_type_all_rule" model="ir.rule">
+        <field name="name">Tous : accès à crm.contract_type</field>
+        <field name="model_id" ref="om_crm_contacts.model_crm_contract_type"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+    
+</odoo>
