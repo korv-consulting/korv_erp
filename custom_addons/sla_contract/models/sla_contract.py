@@ -1,67 +1,125 @@
-from odoo import fields, models
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class SlaContract(models.Model):
-    _name = 'sla.contract'
-    _description = 'SLA Contract'
-    _order = 'create_date desc, id desc'
+    _name = "sla.contract"
+    _description = "SLA Contract"
+    _rec_name = "name"
 
     _sql_constraints = [
         (
-            'sale_order_unique_sla',
-            'unique(sale_order_id)',
-            'Une commande ne peut avoir qu\'un seul SLA.',
+            'mission_unique_sla',
+            'unique(mission_id)',
+            'Une mission ne peut avoir qu\'un seul SLA.',
         ),
     ]
 
-    # Identification
-    name = fields.Char(string='Référence SLA', required=True)
-    sale_order_id = fields.Many2one(
-        comodel_name='sale.order',
-        string='Commande',
-        ondelete='set null',
+    # =========================
+    # Champs généraux
+    # =========================
+
+    name = fields.Char(string="SLA Reference", required=True)
+    mission_id = fields.Many2one(
+        comodel_name="sale.order",
+        string="Mission",
+        required=True,
+        ondelete="cascade"
     )
     partner_id = fields.Many2one(
-        comodel_name='res.partner',
-        string='Client',
-        required=True,
-        ondelete='restrict',
-    )
-    mission_name = fields.Char(string='Nom de la mission')
-
-    # Period
-    start_date = fields.Date(string='Date de début')
-    end_date = fields.Date(string='Date de fin')
-    state = fields.Selection(
-        selection=[
-            ('draft', 'Brouillon'),
-            ('active', 'Actif'),
-            ('expired', 'Expiré'),
-        ],
-        string='Statut',
-        default='draft',
+        comodel_name="res.partner",
+        related="mission_id.partner_id",
+        store=True,
+        readonly=True
     )
 
-    # Engagements SLA
-    response_time = fields.Float(string='Temps de réponse(heures)')
-    resolution_time = fields.Float(string='Temps de résolution(heures)')
-    support_hours = fields.Selection(
-        selection=[
-            ('8x5', '8x5 (du lundi au vendredi, de 8h à 17h)'),
-            ('24x7', '24x7 (7j/7, 24h/24)'),
-        ],
-        string='Heures de support',
-        default='24x7',
-    )
+    service_type = fields.Selection([
+        ('recruitment', 'Recrutement'),
+        ('temp_staffing', 'Intérim'),
+        ('payroll', 'Paie'),
+    ], required=True, string="Type de service")
 
-    # Couverture SLA
-    scope = fields.Text(string='Services couverts')
-    exclusions = fields.Text(string='Exclusions')
+    geo_scope = fields.Selection([
+        ('city', 'Ville'),
+        ('regional', 'Régional'),
+        ('national', 'National'),
+        ('international', 'International'),
+    ], string="Périmètre géographique")
 
+    active = fields.Boolean(default=True)
+
+    start_date = fields.Date(string="Date de début")
+    end_date = fields.Date(string="Date de fin")
+    state = fields.Selection([
+        ('draft', 'Brouillon'),
+        ('active', 'Actif'),
+        ('expired', 'Expiré'),
+    ], default='draft', string="Statut", readonly=True)
+
+    # =========================
+    # RECRUITMENT
+    # =========================
+
+    take_charge_hours = fields.Float("Délai prise en charge (heures)")
+    shortlist_days = fields.Integer("Délai short-list (jours)")
+    min_cv_shortlist = fields.Integer("Nb CV minimum")
+    first_interview_days = fields.Integer("Délai 1er entretien client(jours)")
+    time_to_fill_days_target = fields.Integer("Objectif time-to-fill (jours)")
+    checks_included = fields.Text("Vérifications incluses")
+    guarantee_days = fields.Integer("Période de garantie (jours)")
+    free_replacement = fields.Boolean("Remplacement gratuit")
+    replacement_count_included = fields.Integer("Nb remplacements inclus")
+    replacement_conditions = fields.Text("Conditions de remplacement")
+
+    # =========================
+    # TEMP STAFFING
+    # =========================
+
+    candidate_proposal_hours = fields.Float("Délai proposition candidat (heures)")
+    deployment_hours = fields.Float("Délai mise à disposition (heures)")
+    replacement_hours = fields.Float("Délai remplacement (heures)")
+
+    coverage_hours = fields.Selection([
+        ('8x5', '8x5'),
+        ('12x5', '12x5'),
+        ('24x7', '24x7'),
+    ], string="Couverture horaire")
+
+    on_call = fields.Boolean("Astreinte")
+    min_assignment_days = fields.Integer("Durée minimale mission (jours)")
+    timesheet_required = fields.Boolean("Timesheet obligatoire")
+    temp_docs_included = fields.Text("Documents inclus")
+
+    # =========================
+    # PAYROLL (future ready)
+    # =========================
+
+    payroll_cycle_day = fields.Integer("Jour cutoff")
+    payroll_delivery_day = fields.Integer("Jour livraison bulletins")
+    correction_sla_hours = fields.Float("SLA corrections (heures)")
+    compliance_checks = fields.Text("Contrôles conformité")
+
+    # =========================
+    # VALIDATIONS
+    # =========================
+
+    @api.constrains('service_type')
+    def _check_service_type_change(self):
+        for rec in self:
+            if rec._origin and rec._origin.service_type and rec._origin.service_type != rec.service_type:
+                raise ValidationError("Impossible de changer le type de service d'un SLA existant.")
+
+    @api.constrains('replacement_count_included', 'free_replacement')
+    def _check_replacement_logic(self):
+        for rec in self:
+            if rec.free_replacement and rec.replacement_count_included <= 0:
+                raise ValidationError("Veuillez définir un nombre de remplacements inclus.")
+
+   
     def cron_check_sla_expiration(self):
         """Passe en 'expired' les contrats dont la date de fin est dépassée"""
         today = fields.Date.today()
-        # On cherche uniquement les contrats 'active' qui ont une date de fin < aujourd'hui
+        # On cherche uniquement les contrats 'active' qui ont une date de fin ANTÉRIEURE à aujourd'hui
         expired_contracts = self.search([
             ('state', '=', 'active'),
             ('end_date', '<', today)
@@ -69,3 +127,4 @@ class SlaContract(models.Model):
         if expired_contracts:
             expired_contracts.write({'state': 'expired'}) 
 
+             

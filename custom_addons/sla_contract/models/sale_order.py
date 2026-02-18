@@ -6,7 +6,7 @@ class SaleOrder(models.Model):
 
     sla_ids = fields.One2many(
         comodel_name='sla.contract',
-        inverse_name='sale_order_id',
+        inverse_name='mission_id',
         string='SLA',
     )
     has_sla = fields.Boolean(

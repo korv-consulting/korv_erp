@@ -1,72 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<!-- Action window pour gérer les SLA -->
-<record id="action_sla_contract" model="ir.actions.act_window">
-    <field name="name">SLA Contracts</field>
-    <field name="res_model">sla.contract</field>
-    <field name="view_mode">tree,form</field>
-    <field name="help" type="html">
-        <p>
-            Créez ici les contrats de SLA liés à vos commandes de vente.
-        </p>
-    </field>
-</record>
+    <!-- Tree View for SLA Contracts -->
+    <record id="view_sla_contract_tree" model="ir.ui.view">
+        <field name="name">sla.contract.tree</field>
+        <field name="model">sla.contract</field>
+        <field name="arch" type="xml">
+            <tree string="SLA Contracts">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="service_type"/>
+                <field name="geo_scope"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
 
-<!-- Menu lié à l'action window -->
-<menuitem
-    id="menu_sla_contract"
-    name="SLA"
-    parent="sale.sale_order_menu"
-    action="action_sla_contract"
-    sequence="30"
-/>
+    <!-- Form View for SLA Contracts -->
+    <record id="view_sla_contract_form" model="ir.ui.view">
+        <field name="name">sla.contract.form</field>
+        <field name="model">sla.contract</field>
+        <field name="arch" type="xml">
+            <form string="SLA Contract">
+                <header>
+                    <button name="%(action_report_sla_contract_print)d"
+                            string="Imprimer"
+                            type="action"
+                            class="btn-primary"/>
+                </header>
+                <sheet>
+                    <!-- Informations générales -->
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="mission_id"/>
+                            <field name="partner_id" readonly="1"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="service_type"/>
+                            <field name="geo_scope"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
 
-<!-- Bouton imprimer dans le formulaire -->
-<record id="view_sla_contract_form" model="ir.ui.view">
-    <field name="name">sla.contract.form</field>
-    <field name="model">sla.contract</field>
-    <field name="arch" type="xml">
-        <form string="SLA Contract">
-            <header>
-                <button name="%(action_report_sla_contract)d"
-                        string="Imprimer"
-                        type="action"
-                        class="btn-primary"/>
-            </header>
-            <sheet>
-                <group>
-                    <group>
-                        <field name="name"/>
-                        <field name="sale_order_id"/>
-                        <field name="partner_id"/>
-                        <field name="mission_name"/>
-                    </group>
-                    <group>
-                        <field name="start_date"/>
-                        <field name="end_date"/>
-                        <field name="state"/>
-                        <field name="support_hours"/>
-                    </group>
-                </group>
-                <notebook>
-                    <page string="Engagements SLA">
-                        <group>
-                            <field name="response_time"/>
-                            <field name="resolution_time"/>
-                        </group>
-                    </page>
-                    <page string="Détails">
-                        <group>
-                            <field name="scope"/>
-                            <field name="exclusions"/>
-                        </group>
-                    </page>
-                </notebook>
-            </sheet>
-        </form>
-    </field>
-</record>
+                    <!-- Onglets par type de service -->
+                    <notebook>
+                        <!-- ONGLET RECRUTEMENT -->
+                        <page string="Recrutement" invisible="service_type != 'recruitment'">
+                            <group>
+                                <group string="Délais">
+                                    <field name="take_charge_hours"/>
+                                    <field name="shortlist_days"/>
+                                    <field name="first_interview_days"/>
+                                    <field name="time_to_fill_days_target"/>
+                                </group>
+                                <group string="Candidatures">
+                                    <field name="min_cv_shortlist"/>
+                                    <field name="checks_included"/>
+                                </group>
+                            </group>
+
+                            <group string="Garantie et Remplacement">
+                                <group>
+                                    <field name="guarantee_days"/>
+                                    <field name="free_replacement"/>
+                                    <field name="replacement_count_included" invisible="not free_replacement"/>
+                                </group>
+                                <group>
+                                    <field name="replacement_conditions"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- ONGLET INTÉRIM -->
+                        <page string="Intérim" invisible="service_type != 'temp_staffing'">
+                            <group>
+                                <group string="Délais de mise à disposition">
+                                    <field name="candidate_proposal_hours"/>
+                                    <field name="deployment_hours"/>
+                                    <field name="replacement_hours"/>
+                                </group>
+                                <group string="Couverture">
+                                    <field name="coverage_hours"/>
+                                    <field name="on_call"/>
+                                </group>
+                            </group>
+
+                            <group string="Missions">
+                                <group>
+                                    <field name="min_assignment_days"/>
+                                    <field name="timesheet_required"/>
+                                </group>
+                                <group>
+                                    <field name="temp_docs_included"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- ONGLET PAIE -->
+                        <page string="Paie" invisible="service_type != 'payroll'">
+                            <group>
+                                <group string="Calendrier">
+                                    <field name="payroll_cycle_day"/>
+                                    <field name="payroll_delivery_day"/>
+                                </group>
+                                <group string="Corrections">
+                                    <field name="correction_sla_hours"/>
+                                </group>
+                            </group>
+
+                            <group string="Conformité">
+                                <field name="compliance_checks"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action window pour gérer les SLA -->
+    <record id="action_sla_contract" model="ir.actions.act_window">
+        <field name="name">SLA Contracts</field>
+        <field name="res_model">sla.contract</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier contrat SLA
+            </p>
+            <p>
+                Créez ici les contrats de SLA liés à vos commandes de vente.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu lié à l'action window -->
+    <menuitem
+        id="menu_sla_contract"
+        name="SLA"
+        parent="sale.sale_order_menu"
+        action="action_sla_contract"
+        sequence="30"/>
 
 </odoo>
-
