@@ -1,0 +1,20 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#   * om_missions
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fr\n"
+
+#. module: om_missions
+#: model:ir.ui.view,arch_db:om_missions.view_order_form_inherit_add_mission
+msgid "Ajouter une mission "
+msgstr "Add une mission"
+
+#. module: om_missions
+#: model:ir.ui.view,arch_db:om_missions.view_order_form_inherit_add_mission
+msgid "Tapez pour trouver une mission"
+msgstr "Type to find a mission"
