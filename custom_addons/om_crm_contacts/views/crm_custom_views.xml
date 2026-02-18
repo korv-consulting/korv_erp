@@ -111,7 +111,7 @@
 
                             <group>
                                 <field name="budget_available"/>
-                                <field name="estimated_budget"/>
+                                <field name="estimated_budget" widget="monetary" options="{'currency_field': 'company_currency'}"/>
                             </group>
 
                             <group>
@@ -136,33 +136,156 @@
 
                         <group string="Validation du besoin">
                             <group>
-                                <field name="needs_validated"/>
+                                <field name="needs_validated" />
+                            </group>
+                            <group>
                                 <field name="confirmed_budget"/>
                             </group>
                         </group>
 
                         <group string="Définition du besoin">
-                            <field name="functional_requirement_description"/>
-                            <field name="expected_business_value"/>
+                            <group>
+                              <field name="functional_requirement_description"/>
+                            </group>
+                            <group>
+                                <field name="expected_business_value"/>
+                            </group>
                         </group>
 
                         <group string="Budget">
                             <group>
-                                <label for="budget_range_min" string="Fourchette budgétaire"/>
+                                <label for="budget_range_min" string="Budget min."/>
                                 <div class="o_row">
-                                    <field name="budget_range_min" class="oe_inline"/>
-                                    <span class="oe_inline"> - </span>
-                                    <field name="budget_range_max" class="oe_inline"/>
+                                    <field name="budget_range_min" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                </div>
+                            </group>
+                            <group>
+                                <label for="budget_range_max" string="Budget max."/>
+                                <div class="o_row">
+                                    <field name="budget_range_max" widget="monetary" options="{'currency_field': 'company_currency'}"/>
                                 </div>
                             </group>
                         </group>
 
                         <group string="Planification et Décision">
                             <group>
+                                <field name="decision_criteria"/>
                                 <field name="desired_start_date"/>
                             </group>
-                            <field name="decision_criteria"/>
-                            <field name="identified_risks"/>
+                            <group>
+                                <field name="identified_risks"/>
+                            </group>
+                        </group>
+
+                    </page>
+
+                    <!-- Opportunité -->
+                    <page name="opportunity" string="Opportunité" invisible="stage_name in ['Lead', 'Prospect', 'Besoin confirmé']">
+
+                        <group string="Qualification">
+                            <group>
+                                <field name="opportunity_qualified"/>
+                            </group>
+                            <group>
+                                <field name="business_priority"/>
+                            </group>
+                        </group>
+
+                        <group string="Prévisions de closing">
+                            <group class="o_line">
+                                <field name="estimated_deal_amount" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                <field name="closing_probability"/>
+                            </group>
+                            <group>
+                                <field name="estimated_closing_date"/>
+                            </group>
+                        </group>
+
+                        <group string="Analyse financière">
+                            <group>
+                                <field name="estimated_cost" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                            </group>
+                            <group>
+                                <field name="target_margin"/>
+                            </group>
+                        </group>
+
+                        <group string="Environnement stratégique">
+                            <group>
+                                <field name="competition_present"/>
+                            </group>
+                            <group>
+                                <field name="internal_capacity_available"/>
+                            </group>
+                        </group>
+
+                    </page>
+
+                    <!-- Proposition -->
+                    <page name="proposal" string="Proposition" invisible="stage_name in ['Lead', 'Prospect', 'Besoin confirmé', 'Opportunité']">
+
+                        <group string="Envoi de l’offre">
+                            <group>
+                                <field name="proposal_sent"/>
+                            </group>
+                            <group>
+                                <field name="proposal_sent_date"/>
+                            </group>
+                        </group>
+
+                        <group string="Détails financiers">
+                            <group>
+                                <field name="company_currency" invisible="1"/>
+                                <field name="proposed_amount" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                <field name="proposed_discount"/>
+                            </group>
+                            <group>
+                                <field name="offer_validity_date"/>
+                            </group>
+                        </group>
+
+                        <group string="Suivi et Feedback">
+                            <group>
+                                <field name="follow_up_date"/>
+                            </group>
+                            <group>
+                                <field name="initial_client_feedback"/>
+                            </group>
+                        </group>
+
+                    </page>
+
+                    <!-- Négociation -->
+                    <page name="negotiation" string="Négociation" invisible="stage_name not in ['Négociation', 'Client', 'Fidélisation']">
+
+                        <group string="Statut">
+                            <group>
+                                <field name="negotiation_active"/>
+                            </group>
+                            <group>
+                                <field name="internal_go_no_go"/>
+                            </group>
+                        </group>
+
+                        <group string="Points négociés">
+                            <group>
+                                <field name="negotiated_points" widget="selection"/>
+                            </group>
+                            <group>
+                                <field name="requested_discount"/>
+                                <field name="granted_discount"/>
+                            </group>
+                        </group>
+
+                        <group string="Risque et suivi">
+                            <group>
+                                <field name="main_loss_risk"/>
+                                <field name="updated_closing_probability"/>
+                            </group>
+                            <group>
+                                <field name="final_decision_expected_date"/>
+                                <field name="last_client_feedback"/>
+                            </group>
                         </group>
 
                     </page>
@@ -191,11 +314,38 @@
                             </group>
 
                             <group>
-                                <field name="contract_amount"/>
+                                <field name="contract_amount" widget="monetary" options="{'currency_field': 'company_currency'}"/>
                             </group>
 
                         </group>
                     </page>
+
+                    <!-- Fidélisation -->
+                    <page name="loyalty" string="Fidélisation" invisible="stage_name not in ['Fidélisation']">
+
+                        <group string="Statut client">
+                            <group>
+                                <field name="recurring_client"/>
+                                <field name="renewal_date"/>
+                            </group>
+                            <group>
+                                <field name="renewal_planned"/>
+                            </group>
+                        </group>
+
+                        <group string="Satisfaction et CLV">
+                            <field name="satisfaction_rate"/>
+                            <field name="nps"/>
+                            <field name="customer_lifetime_value"/>
+                        </group>
+
+                        <group string="Upsell / Cross-sell">
+                            <field name="upsell_done"/>
+                            <field name="cross_sell_done"/>
+                        </group>
+
+                    </page>
+                    
                 </xpath>
                 
             </field>
@@ -223,6 +373,10 @@
                 </xpath>
 
             </field>
+        </record>
+
+        <record id="base.XAF" model="res.currency">
+            <field name="position">after</field>
         </record>
         
         <record id="crm_quick_create_opportunity_custom_form" model="ir.ui.view">
