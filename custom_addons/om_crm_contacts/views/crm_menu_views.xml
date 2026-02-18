@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="crm.menu_root" model="ir.ui.menu">
+        <field name="name">Gestion Client</field>
+    </record>
+
+    <record id="crm.menu_crm_opportunities" model="ir.ui.menu">
+        <field name="name">Cycle de vie Client</field>
+    </record>
+
+    <record id="crm.menu_crm_leads" model="ir.ui.menu">
+        <field name="name">Prospects</field>
+    </record>
+
+    <record id="crm.crm_menu_report" model="ir.ui.menu">
+        <field name="name">Analyses Commerciales</field>
+    </record>
+
+</odoo>

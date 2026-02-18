@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="crm.crm_lead_action_pipeline" model="ir.actions.act_window">
+            <field name="name">Cycle de vie d’un Client</field>
+        </record>
+
+        <!-- Formulaire d'Opportunité  -->
+        <record id="crm_lead_custom_form" model="ir.ui.view">
+            <field name="name">crm.lead.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+
+               <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="placeholder">Nom de l'opportunité</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='stage_id']" position="after">
+                    <field name="stage_name" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//group[@name='opportunity_partner']//field[@name='partner_id']" position="attributes">
+                    <!-- <attribute name="invisible">not stage_id or stage_id &lt; 7</attribute> -->
+                        <attribute name="invisible">stage_name not in ['Client', 'Fidélisation']</attribute>
+                </xpath>
+
+                <xpath expr="//group[@name='opportunity_partner']//field[@name='partner_id']" position="after">
+                   <field name="activity_area_id"/>
+                    <field name="company_size_id"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='email_from']" position="attributes">
+                    <attribute name="on_change">1</attribute>
+                    <attribute name="required">not phone</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='phone']" position="attributes">
+                    <attribute name="on_change">1</attribute>
+                    <attribute name="required">not email_from</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="department_id"/>
+                    <field name="employee_id"/>
+                </xpath>
+
+                 <xpath expr="//page[@name='internal_notes']" position="attributes">
+                    <attribute name="string">Description du besoin</attribute>
+                </xpath>
+
+                <xpath expr="//page[@name='internal_notes']//field[@name='description']" position="before">
+                    <field name="interested_service" placeholder="Produit / service d’intérêt" class="mt40 mb40" style="width: 50%;"/>
+                </xpath>
+
+                <xpath expr="//field[@name='date_deadline']"
+                    position="attributes">
+                    <attribute name="string">Date d'échéance</attribute>
+                </xpath>
+
+                <xpath expr="//page[@name='lead']//field[@name='team_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//group[@name='lead_partner']//field[@name='state_id']"
+                    position="attributes">
+                    <attribute name="placeholder">Région / État</attribute>
+                </xpath>
+
+                <xpath expr="//page[@name='lead']//div[contains(@class,'o_address_format')]//field[@name='state_id']"
+                    position="attributes">
+                    <attribute name="placeholder">Région / État</attribute>
+                </xpath>
+
+                <xpath expr="//page[@name='lead']//field[@name='team_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='day_open']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='day_close']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//group[@name='Misc']//field[@name='company_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- Lead -->
+                <xpath expr="//field[@name='day_open']" position="before">
+                    <field name="has_consent_contact"/>
+                    <field name="perceived_interest_level"/>
+                    <field name="perceived_urgency_level"/>
+                    <field name="lead_status"/>
+                </xpath>
+
+
+               <!-- Onglets Cycle de vie -->
+                <xpath expr="//page[@name='lead']" position="after">
+
+                    <!-- Prospect -->
+                    <page name="prospect" string="Prospect" invisible="stage_name in ['Lead']">
+
+                        <group string="Budget et Décision">
+
+                            <group>
+                                <field name="budget_available"/>
+                                <field name="estimated_budget"/>
+                            </group>
+
+                            <group>
+                                <field name="decision_target_date"/>
+                                <field name="authority_level"/>
+                            </group>
+
+                        </group>
+
+                        <group string="Suivi">
+                            <group>
+                                <field name="next_action"/>
+                                <field name="next_action_date"/>
+                            </group>
+
+                        </group>
+
+                    </page>
+
+                    <!-- Besoin confirmé -->
+                    <page name="validated_need" string="Besoin confirmé" invisible="stage_name in ['Lead', 'Prospect']">
+
+                        <group string="Validation du besoin">
+                            <group>
+                                <field name="needs_validated"/>
+                                <field name="confirmed_budget"/>
+                            </group>
+                        </group>
+
+                        <group string="Définition du besoin">
+                            <field name="functional_requirement_description"/>
+                            <field name="expected_business_value"/>
+                        </group>
+
+                        <group string="Budget">
+                            <group>
+                                <label for="budget_range_min" string="Fourchette budgétaire"/>
+                                <div class="o_row">
+                                    <field name="budget_range_min" class="oe_inline"/>
+                                    <span class="oe_inline"> - </span>
+                                    <field name="budget_range_max" class="oe_inline"/>
+                                </div>
+                            </group>
+                        </group>
+
+                        <group string="Planification et Décision">
+                            <group>
+                                <field name="desired_start_date"/>
+                            </group>
+                            <field name="decision_criteria"/>
+                            <field name="identified_risks"/>
+                        </group>
+
+                    </page>
+
+                    <!-- Client -->
+                    <page name="client" string="Client" invisible="stage_name not in ['Client', 'Fidélisation']">
+                        <group string="Informations Contrat">
+                            <group>
+                                <field name="is_client_active" class="oe_inline"/>
+                                <field name="contract_type_id"/>
+                            </group>
+
+                            <group>
+                                <field name="contract_start_date"/>
+                                <label for="contract_duration_months" string="Durée du contrat"/>
+                                <div class="o_row">
+                                    <field name="contract_duration_months" id="contract_duration_months"/>
+                                    <field name="contract_duration_unit"/>
+                                </div>
+                            </group>
+
+                          
+                            <group>
+                                <field name="signed_contract" class="oe_inline"/>
+                                <field name="signed_contract_date"/>
+                            </group>
+
+                            <group>
+                                <field name="contract_amount"/>
+                            </group>
+
+                        </group>
+                    </page>
+                </xpath>
+                
+            </field>
+        </record>
+
+        <!-- Liste -->
+        <record id="crm_lead_custom_tree" model="ir.ui.view">
+            <field name="name">crm.lead.custom.tree</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+
+                <!-- <xpath expr="//tree/header/button[@name='action_generate_leads']"
+                    position="replace"/> -->
+
+                <xpath expr="//field[@name='email_from']" position="after">
+                    <!-- <field name="rccm"/> -->
+                    <field name="department_id"/>
+                    <field name="employee_id"/>
+                </xpath>
+
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+
+            </field>
+        </record>
+        
+        <record id="crm_quick_create_opportunity_custom_form" model="ir.ui.view">
+            <field name="name">crm.quick.create.opportunity.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="placeholder">Nom de l'opportunité</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='email_from']" position="attributes">
+                    <attribute name="on_change">1</attribute>
+                    <attribute name="required">not phone</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='phone']" position="attributes">
+                    <attribute name="on_change">1</attribute>
+                    <attribute name="required">not email_from</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="stage_id" invisible="1"/> 
+                </xpath>
+
+                <xpath expr="//field[@name='stage_id']" position="after">
+                    <field name="stage_name" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <!-- <attribute name="invisible">not stage_id or stage_id &lt; 7</attribute> -->
+                        <attribute name="invisible">stage_name not in ['Client', 'Fidélisation']</attribute>
+                </xpath>
+                
+                <!-- <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">not stage_id or stage_id &lt; 7</attribute>
+                </xpath> -->
+
+
+            </field>
+        </record>
+        
+</odoo>
