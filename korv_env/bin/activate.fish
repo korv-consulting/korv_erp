@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/danson/Workspace/CRM/korv_erp/korv_env
+set -gx VIRTUAL_ENV /home/korvconsulting/Documents/KORV_CONSULTING/korv_erp/korv_env
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH
