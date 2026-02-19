@@ -72,9 +72,8 @@ class SaleOrder(models.Model):
         # Construire un context propre 
         ctx = dict(self.env.context or {})
         ctx.update({
-            'default_sale_order_id': self.id,
+            'default_mission_id': self.id,
             'default_partner_id': self.partner_id.id,
-            'default_mission_name': self._sla_default_mission_name(),
             'form_view_initial_mode': 'edit',
         })
         action['context'] = ctx

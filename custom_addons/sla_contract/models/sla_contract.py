@@ -15,9 +15,9 @@ class SlaContract(models.Model):
         ),
     ]
 
-    # =========================
-    # Champs généraux
-    # =========================
+
+    # champs de base
+
 
     name = fields.Char(string="SLA Reference", required=True)
     mission_id = fields.Many2one(
@@ -28,10 +28,10 @@ class SlaContract(models.Model):
     )
     partner_id = fields.Many2one(
         comodel_name="res.partner",
+        string="Client",
         related="mission_id.partner_id",
         store=True,
-        readonly=True
-    )
+        readonly=True,)
 
     service_type = fields.Selection([
         ('recruitment', 'Recrutement'),
@@ -56,7 +56,7 @@ class SlaContract(models.Model):
         ('expired', 'Expiré'),
     ], default='draft', string="Statut", readonly=True)
 
-    # =========================
+   
     # RECRUITMENT
     # =========================
 
@@ -91,7 +91,7 @@ class SlaContract(models.Model):
     temp_docs_included = fields.Text("Documents inclus")
 
     # =========================
-    # PAYROLL (future ready)
+    # PAYROLL
     # =========================
 
     payroll_cycle_day = fields.Integer("Jour cutoff")
@@ -102,6 +102,12 @@ class SlaContract(models.Model):
     # =========================
     # VALIDATIONS
     # =========================
+
+    @api.onchange('mission_id')
+    def _onchange_mission_id(self):
+        """Auto-remplit le client depuis la mission"""
+        if self.mission_id:
+            self.partner_id = self.mission_id.partner_id
 
     @api.constrains('service_type')
     def _check_service_type_change(self):

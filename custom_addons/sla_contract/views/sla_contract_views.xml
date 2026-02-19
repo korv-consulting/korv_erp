@@ -34,7 +34,7 @@
                         <group>
                             <field name="name"/>
                             <field name="mission_id"/>
-                            <field name="partner_id" readonly="1"/>
+                            <field name="partner_id" string="Client" readonly="1"/>
                             <field name="active"/>
                         </group>
                         <group>
