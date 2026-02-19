@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="applicant_report_template">
+
+<t t-call="web.external_layout">
+<main>
+
+<style> 
+    body { 
+        font-family: Arial, sans-serif; font-size: 12px; color: #222;
+    } 
+    body, main {
+        margin: 0;
+        padding: 0;
+    }
+    .page {
+        page-break-after: always;
+        margin: 0;
+        padding: 0;
+    }
+    h2 { margin-bottom: 20px; letter-spacing: 1px; } 
+    .section-title { background-color: #1F739A; color: white; padding: 8px; font-weight: bold; text-transform: uppercase; margin-top: 20px; margin-bottom: 10px; font-size: 13px; } 
+    .info-table td { border: 1px solid #ccc; padding: 6px; } 
+    .criteria-table th { background-color: #E6EEF5; border: 1px solid #999; padding: 6px; font-weight: bold; } 
+    .criteria-table td { border: 1px solid #ccc; padding: 6px; } 
+    .text-block { border: 1px solid #ccc; padding: 10px; min-height: 60px; text-align: justify; } 
+    .signature-box { border-top: 2px solid #1F739A; margin-top: 40px; padding-top: 15px; } 
+    .footer-text { text-align: center; margin-top: 30px; font-size: 10px; color: #666; } 
+</style>
+
+<t t-foreach="docs" t-as="doc">
+
+<div class="page">
+
+<!-- HEADER -->
+<t t-set="korv_work_company" t-value="env['res.company'].search([('name','=','KORV WORK')], limit=1)"/>
+<table style="width:100%; margin-bottom:20px;">
+    <tr>
+        <td style="width:50%; text-align:left;">
+            <img t-if="doc.company_id.logo"
+                 t-att-src="'/web/image/res.company/%s/logo' % doc.company_id.id"
+                 style="height:60px;"/>
+        </td>
+        <td style="width:50%; text-align:right;">
+            <img t-if="korv_work_company"
+                 t-att-src="'/web/image/res.company/%s/logo' % korv_work_company.id"
+                 style="height:60px;"/>
+        </td>
+    </tr>
+</table>
+
+<h2 style="text-align:center;">RAPPORT D’EVALUATION CANDIDAT</h2>
+
+<!-- INFOS CANDIDAT -->
+<table class="info-table" style="width:100%; border-collapse:collapse;">
+<tr>
+<td><strong>Nom</strong></td>
+<td><t t-esc="doc.partner_name"/></td>
+<td><strong>Poste</strong></td>
+<td><t t-esc="doc.job_id.name"/></td>
+</tr>
+<tr>
+<td><strong>Dernier diplôme</strong></td>
+<td><t t-esc="doc.last_degree"/></td>
+<td><strong>Localisation candidat</strong></td>
+<td><t t-esc="doc.candidate_location"/></td>
+</tr>
+<tr>
+<td><strong>Localisation poste</strong></td>
+<td><t t-esc="doc.job_location"/></td>
+<td><strong>Mobilité</strong></td>
+<td><t t-esc="doc.mobility"/></td>
+</tr>
+<tr>
+<td><strong>Date entretien</strong></td>
+<td><span t-esc="doc.create_date.strftime('%d/%m/%Y') if doc.create_date else ''"/></td>
+<td><strong>Mode</strong></td>
+<td>
+    <t t-if="doc.interview_mode == 'physique'">Présentiel</t>
+    <t t-if="doc.interview_mode == 'visio'">Visioconférence</t>
+    <t t-if="doc.interview_mode == 'telephone'">Téléphonique</t>
+    <t t-if="not doc.interview_mode">-</t>
+</td>
+</tr>
+<tr>
+<td><strong>Mené par</strong></td>
+<td colspan="3"><span t-esc="doc.user_id.name or ''"/></td>
+</tr>
+</table>
+
+<br/>
+
+<!-- SYNTHÈSE EXECUTIVE -->
+<div class="section-title">SYNTHÈSE EXECUTIVE</div>
+<div class="text-block">
+    <span t-raw="doc.executive_summary or ''"/>
+</div>
+
+<!-- ÉVALUATIONS PAR LIGNE -->
+<t t-if="doc.evaluation_line_ids">
+    <div class="section-title">GRILLE D'ÉVALUATION DÉTAILLÉE</div>
+    <table class="criteria-table" style="width:100%; border-collapse:collapse;">
+        <tr>
+            <th>Critère</th>
+            <th>Synthèse</th>
+            <th>Description</th>
+        </tr>
+        <t t-foreach="doc.evaluation_line_ids" t-as="line">
+            <tr>
+                <td><t t-esc="line.criteria_id.criteria"/></td>
+                <td><t t-esc="line.summary or '-'"/></td>
+                <td><t t-esc="line.description or '-'"/></td>
+            </tr>
+        </t>
+    </table>
+</t>
+
+<t t-if="not doc.evaluation_line_ids">
+    <div class="section-title" style="text-align:center; font-style:italic;">
+        Aucune évaluation disponible
+    </div>
+</t>
+
+<br/>
+
+<!-- AVIS DU CABINET -->
+<div class="section-title">AVIS DU CABINET</div>
+<div class="text-block">
+    <span t-raw="doc.firm_opinion or ''"/>
+</div>
+
+<!-- SUITE DU PROCESSUS -->
+<div class="section-title">SUITE DU PROCESSUS</div>
+<div class="text-block">
+    <span t-raw="doc.next_steps or ''"/>
+</div>
+
+<!-- SIGNATURE -->
+<div class="signature-box">
+    <table style="width:100%;">
+        <tr>
+            <td style="width:50%;">
+                <strong>Signature du consultant</strong>
+                <div style="margin-top:10px;">
+                    <img t-if="doc.consultant_signature" 
+                    t-att-src="'data:image/png;base64,%s' % doc.consultant_signature"
+                    style="height:80px; width:auto; display:block;"/>
+                    <span t-if="not doc.consultant_signature" style="color:#999; font-style:italic;">
+                        Non signé
+                    </span>
+                </div>
+            </td>
+            <td style="width:50%; text-align:right;">
+                <strong>Date du rapport :</strong> 
+                <span t-esc="time.strftime('%d/%m/%Y')"/>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- PIED DE PAGE -->
+<div class="footer-text">
+    KORV Consulting Africa reste à votre disposition pour l’organisation de cet entretien et l’accompagnement des prochaines étapes du processus. 
+</div>
+
+</div>
+</t>
+
+</main>
+</t>
+
+</template>
+
+<!-- ACTION REPORT -->
+<record id="action_applicant_report" model="ir.actions.report">
+    <field name="name">Rapport d'entretien</field>
+    <field name="model">hr.applicant</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">application_report_system.applicant_report_template</field>
+    <field name="report_file">application_report_system.applicant_report_template</field>
+    <field name="binding_model_id" ref="hr_recruitment.model_hr_applicant"/>
+    <field name="binding_type">report</field>
+    <field name="paperformat_id" ref="base.paperformat_euro"/>
+</record>
+
+
+</odoo>
