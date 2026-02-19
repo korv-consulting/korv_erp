@@ -54,7 +54,7 @@ class SlaContract(models.Model):
         ('draft', 'Brouillon'),
         ('active', 'Actif'),
         ('expired', 'Expiré'),
-    ], default='draft', string="Statut", readonly=True)
+    ], default='draft', string="Statut",)
 
    
     # RECRUITMENT

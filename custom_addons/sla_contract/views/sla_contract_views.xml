@@ -7,11 +7,11 @@
         <field name="model">sla.contract</field>
         <field name="arch" type="xml">
             <tree string="SLA Contracts">
-                <field name="name"/>
-                <field name="partner_id"/>
-                <field name="service_type"/>
-                <field name="geo_scope"/>
-                <field name="active"/>
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="service_type" />
+                <field name="geo_scope" />
+                <field name="active" />
             </tree>
         </field>
     </record>
@@ -24,24 +24,27 @@
             <form string="SLA Contract">
                 <header>
                     <button name="%(action_report_sla_contract_print)d"
-                            string="Imprimer"
-                            type="action"
-                            class="btn-primary"/>
+                        string="Imprimer"
+                        type="action"
+                        class="btn-primary" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,expired"  />
+
                 </header>
                 <sheet>
                     <!-- Informations générales -->
                     <group>
                         <group>
-                            <field name="name"/>
-                            <field name="mission_id"/>
-                            <field name="partner_id" string="Client" readonly="1"/>
-                            <field name="active"/>
+                            <field name="name" />
+                            <field name="mission_id" />
+                            <field name="partner_id" string="Client" readonly="1" />
+                            <field name="active" />
+                            <field name="state"  />
                         </group>
                         <group>
-                            <field name="service_type"/>
-                            <field name="geo_scope"/>
-                            <field name="start_date"/>
-                            <field name="end_date"/>
+                            <field name="service_type" />
+                            <field name="geo_scope" />
+                            <field name="start_date" />
+                            <field name="end_date" />
                         </group>
                     </group>
 
@@ -51,25 +54,26 @@
                         <page string="Recrutement" invisible="service_type != 'recruitment'">
                             <group>
                                 <group string="Délais">
-                                    <field name="take_charge_hours"/>
-                                    <field name="shortlist_days"/>
-                                    <field name="first_interview_days"/>
-                                    <field name="time_to_fill_days_target"/>
+                                    <field name="take_charge_hours" />
+                                    <field name="shortlist_days" />
+                                    <field name="first_interview_days" />
+                                    <field name="time_to_fill_days_target" />
                                 </group>
                                 <group string="Candidatures">
-                                    <field name="min_cv_shortlist"/>
-                                    <field name="checks_included"/>
+                                    <field name="min_cv_shortlist" />
+                                    <field name="checks_included" />
                                 </group>
                             </group>
 
                             <group string="Garantie et Remplacement">
                                 <group>
-                                    <field name="guarantee_days"/>
-                                    <field name="free_replacement"/>
-                                    <field name="replacement_count_included" invisible="not free_replacement"/>
+                                    <field name="guarantee_days" />
+                                    <field name="free_replacement" />
+                                    <field name="replacement_count_included"
+                                        invisible="not free_replacement" />
                                 </group>
                                 <group>
-                                    <field name="replacement_conditions"/>
+                                    <field name="replacement_conditions" />
                                 </group>
                             </group>
                         </page>
@@ -78,23 +82,23 @@
                         <page string="Intérim" invisible="service_type != 'temp_staffing'">
                             <group>
                                 <group string="Délais de mise à disposition">
-                                    <field name="candidate_proposal_hours"/>
-                                    <field name="deployment_hours"/>
-                                    <field name="replacement_hours"/>
+                                    <field name="candidate_proposal_hours" />
+                                    <field name="deployment_hours" />
+                                    <field name="replacement_hours" />
                                 </group>
                                 <group string="Couverture">
-                                    <field name="coverage_hours"/>
-                                    <field name="on_call"/>
+                                    <field name="coverage_hours" />
+                                    <field name="on_call" />
                                 </group>
                             </group>
 
                             <group string="Missions">
                                 <group>
-                                    <field name="min_assignment_days"/>
-                                    <field name="timesheet_required"/>
+                                    <field name="min_assignment_days" />
+                                    <field name="timesheet_required" />
                                 </group>
                                 <group>
-                                    <field name="temp_docs_included"/>
+                                    <field name="temp_docs_included" />
                                 </group>
                             </group>
                         </page>
@@ -103,16 +107,16 @@
                         <page string="Paie" invisible="service_type != 'payroll'">
                             <group>
                                 <group string="Calendrier">
-                                    <field name="payroll_cycle_day"/>
-                                    <field name="payroll_delivery_day"/>
+                                    <field name="payroll_cycle_day" />
+                                    <field name="payroll_delivery_day" />
                                 </group>
                                 <group string="Corrections">
-                                    <field name="correction_sla_hours"/>
+                                    <field name="correction_sla_hours" />
                                 </group>
                             </group>
 
                             <group string="Conformité">
-                                <field name="compliance_checks"/>
+                                <field name="compliance_checks" />
                             </group>
                         </page>
                     </notebook>
@@ -142,6 +146,6 @@
         name="SLA"
         parent="sale.sale_order_menu"
         action="action_sla_contract"
-        sequence="30"/>
+        sequence="30" />
 
 </odoo>

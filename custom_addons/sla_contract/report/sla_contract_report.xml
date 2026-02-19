@@ -1,94 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Action de rapport PDF pour les contrats SLA -->
-   <record id="action_report_sla_contract_print" model="ir.actions.report">
-        <field name="name">Contrat SLA</field>
-        <field name="model">sla.contract</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">sla_contract.report_sla_contract</field>
-        <field name="report_file">sla_contract.report_sla_contract</field>
-        <field name="print_report_name">'SLA-%s' % (object.name)</field>
-        <!-- Cette ligne lie le bouton Imprimer à votre vue sans conflit -->
-        <field name="binding_model_id" ref="model_sla_contract"/>
-        <field name="binding_type">report</field>
-    </record>
-
-
-    <!-- Gabarit QWeb du rapport SLA -->
-    <template id="report_sla_contract">
+    <template id="report_sla_contract_document">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-                <t t-call="web.internal_layout">
-                    <t t-set="title">Contrat SLA - <t t-esc="doc.name"/></t>
+                <t t-call="web.external_layout">
                     <div class="page">
-                        <h2>Contrat de niveau de service (SLA)</h2>
 
-                        <p>
-                            <strong>Référence SLA :</strong>
-                            <span t-esc="doc.name"/>
-                        </p>
-                        <p>
-                            <strong>Commande liée :</strong>
-                            <span t-esc="doc.sale_order_id.name or '-'"/>
-                        </p>
-                        <p>
-                            <strong>Client :</strong>
-                            <span t-esc="doc.partner_id.display_name"/>
-                        </p>
-                        <p>
-                            <strong>Mission :</strong>
-                            <span t-esc="doc.mission_name or ''"/>
-                        </p>
+                        <!-- En-tête -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <h2>Contrat SLA</h2>
+                                <h3><span t-field="doc.name"/></h3>
+                            </div>
+                            <div class="col-6 text-right">
+                                <strong>Statut : </strong>
+                                <span t-field="doc.state"/>
+                                <br/>
+                                <strong>Type de service : </strong>
+                                <span t-field="doc.service_type"/>
+                            </div>
+                        </div>
 
-                        <h3>Période</h3>
-                        <p>
-                            <strong>Date de début :</strong>
-                            <span t-esc="doc.start_date or ''"/>
-                            &#160;&#160;
+                        <!-- Informations générales -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2" class="bg-light">Informations générales</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Client</strong></td>
+                                            <td><span t-field="doc.partner_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Mission</strong></td>
+                                            <td><span t-field="doc.mission_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Périmètre géographique</strong></td>
+                                            <td><span t-field="doc.geo_scope"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Date de début</strong></td>
+                                            <td><span t-field="doc.start_date"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Date de fin</strong></td>
+                                            <td><span t-field="doc.end_date"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-                            <strong>Date de fin :</strong>
-                            <span t-esc="doc.end_date or ''"/>
-                        </p>
-                        <p>
-                            <strong>Statut :</strong>
-                            <span t-esc="doc.state"/>
-                        </p>
+                        <!-- SECTION RECRUTEMENT -->
+                        <t t-if="doc.service_type == 'recruitment'">
+                            <h4 class="mt-4">Recrutement</h4>
+                            <div class="row">
+                                <div class="col-6">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr><th colspan="2" class="bg-light">Délais</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Prise en charge (h)</strong></td>
+                                                <td><span t-field="doc.take_charge_hours"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Short-list (jours)</strong></td>
+                                                <td><span t-field="doc.shortlist_days"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>1er entretien client (jours)</strong></td>
+                                                <td><span t-field="doc.first_interview_days"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Objectif time-to-fill (jours)</strong></td>
+                                                <td><span t-field="doc.time_to_fill_days_target"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr><th colspan="2" class="bg-light">Candidatures</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Nb CV minimum</strong></td>
+                                                <td><span t-field="doc.min_cv_shortlist"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Vérifications incluses</strong></td>
+                                                <td><span t-field="doc.checks_included"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr><th colspan="2" class="bg-light">Garantie et Remplacement</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Période de garantie (jours)</strong></td>
+                                                <td><span t-field="doc.guarantee_days"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Remplacement gratuit</strong></td>
+                                                <td>
+                                                    <span t-if="doc.free_replacement">Oui</span>
+                                                    <span t-else="">Non</span>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="doc.free_replacement">
+                                                <td><strong>Nb remplacements inclus</strong></td>
+                                                <td><span t-field="doc.replacement_count_included"/></td>
+                                            </tr>
+                                            <tr t-if="doc.replacement_conditions">
+                                                <td><strong>Conditions de remplacement</strong></td>
+                                                <td><span t-field="doc.replacement_conditions"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
 
-                        <h3>Engagements SLA</h3>
-                        <p>
-                            <strong>Temps de réponse :</strong>
-                            <span t-esc="doc.response_time or 0.0"/> heures
-                        </p>
-                        <p>
-                            <strong>Temps de résolution :</strong>
-                            <span t-esc="doc.resolution_time or 0.0"/> heures
-                        </p>
-                        <p>
-                            <strong>Heures de support :</strong>
-                            <span t-esc="doc.support_hours"/>
-                        </p>
+                        <!-- SECTION INTÉRIM -->
+                        <t t-if="doc.service_type == 'temp_staffing'">
+                            <h4 class="mt-4">Intérim</h4>
+                            <div class="row">
+                                <div class="col-6">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr><th colspan="2" class="bg-light">Délais de mise à disposition</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Proposition candidat (h)</strong></td>
+                                                <td><span t-field="doc.candidate_proposal_hours"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Mise à disposition (h)</strong></td>
+                                                <td><span t-field="doc.deployment_hours"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Remplacement (h)</strong></td>
+                                                <td><span t-field="doc.replacement_hours"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr><th colspan="2" class="bg-light">Couverture</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Couverture horaire</strong></td>
+                                                <td><span t-field="doc.coverage_hours"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Astreinte</strong></td>
+                                                <td>
+                                                    <span t-if="doc.on_call">Oui</span>
+                                                    <span t-else="">Non</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr><th colspan="2" class="bg-light">Missions</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Durée minimale mission (jours)</strong></td>
+                                                <td><span t-field="doc.min_assignment_days"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Timesheet obligatoire</strong></td>
+                                                <td>
+                                                    <span t-if="doc.timesheet_required">Oui</span>
+                                                    <span t-else="">Non</span>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="doc.temp_docs_included">
+                                                <td><strong>Documents inclus</strong></td>
+                                                <td><span t-field="doc.temp_docs_included"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
 
-                        <h3>Services couverts</h3>
-                        <p t-if="doc.scope">
-                            <t t-esc="doc.scope"/>
-                        </p>
-                        <p t-if="not doc.scope">
-                            (Non renseigné)
-                        </p>
+                        <!-- SECTION PAIE -->
+                        <t t-if="doc.service_type == 'payroll'">
+                            <h4 class="mt-4">Paie</h4>
+                            <div class="row">
+                                <div class="col-6">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr><th colspan="2" class="bg-light">Calendrier</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Jour cutoff</strong></td>
+                                                <td><span t-field="doc.payroll_cycle_day"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Jour livraison bulletins</strong></td>
+                                                <td><span t-field="doc.payroll_delivery_day"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>SLA corrections (h)</strong></td>
+                                                <td><span t-field="doc.correction_sla_hours"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr><th colspan="2" class="bg-light">Conformité</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Contrôles conformité</strong></td>
+                                                <td><span t-field="doc.compliance_checks"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
 
-                        <h3>Exclusions</h3>
-                        <p t-if="doc.exclusions">
-                            <t t-esc="doc.exclusions"/>
-                        </p>
-                        <p t-if="not doc.exclusions">
-                            (Non renseigné)
-                        </p>
+                        <!-- Signatures -->
+                        <div class="row mt-5">
+                            <div class="col-6 text-center">
+                                <p>________________________</p>
+                                <p><strong>Le Client</strong></p>
+                                <p><span t-field="doc.partner_id"/></p>
+                            </div>
+                            <div class="col-6 text-center">
+                                <p>________________________</p>
+                                <p><strong>Le Prestataire</strong></p>
+                            </div>
+                        </div>
+
                     </div>
                 </t>
             </t>
         </t>
     </template>
 
-</odoo>
+    <record id="action_report_sla_contract_print" model="ir.actions.report">
+        <field name="name">Contrat SLA</field>
+        <field name="model">sla.contract</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sla_contract.report_sla_contract_document</field>
+        <field name="report_file">sla_contract.report_sla_contract_document</field>
+        <field name="binding_model_id" ref="model_sla_contract"/>
+        <field name="binding_type">report</field>
+    </record>
 
+</odoo>
