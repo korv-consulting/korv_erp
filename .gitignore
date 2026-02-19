@@ -6,7 +6,7 @@ __pycache__/
 venv/
 .env/
 .venv/
-.korv_env/
+korv_env/
 
 # Logs
 *.log

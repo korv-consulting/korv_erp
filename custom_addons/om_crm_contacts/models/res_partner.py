@@ -9,3 +9,15 @@ class ResPartner(models.Model):
     department_id = fields.Many2one('hr.department', string="Département assigné")
     
     employee_id = fields.Many2one('hr.employee', string="Employé assigné", domain="[('department_id', '=', department_id)]")
+
+    activity_area_id = fields.Many2one('crm.activity_area', string="Secteur d'activité")
+
+    company_size_id = fields.Many2one('crm.company_size', string="Taille de l'entreprise")
+
+
+    type = fields.Selection([
+        ('contact', 'Contact'),
+        ('invoice', 'Facturation'),
+        ('delivery', 'Presation'),
+        ('other', 'Autre')
+    ], string='Adresse Type', default='contact')

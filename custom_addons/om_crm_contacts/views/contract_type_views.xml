@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_crm_contract_type_tree" model="ir.ui.view">
+        <field name="name">crm.contract_type.tree</field>
+        <field name="model">crm.contract_type</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" sample="1">
+                <field name="name"/>
+                <field name="slug"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_crm_contract_type" model="ir.actions.act_window">
+        <field name="name">Types de contrat</field>
+        <field name="res_model">crm.contract_type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Définissez vos types de contrats (ex: CDD, CDI, Freelance).</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_crm_contract_type"
+              name="Types de contrat"
+              action="action_crm_contract_type"
+              parent="crm.crm_menu_config"
+              sequence="22"/>
+</odoo>
