@@ -56,6 +56,14 @@ class SlaContract(models.Model):
         ('expired', 'Expiré'),
     ], default='draft', string="Statut",)
 
+    company_id = fields.Many2one(
+    'res.company',
+    related='mission_id.company_id',
+    store=True,
+    readonly=True,
+    invisible=True)
+
+
    
     # RECRUITMENT
     # =========================

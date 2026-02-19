@@ -2,269 +2,342 @@
 <odoo>
 
     <template id="report_sla_contract_document">
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="doc">
-                <t t-call="web.external_layout">
-                    <div class="page">
 
-                        <!-- En-tête -->
-                        <div class="row mb-4">
-                            <div class="col-6">
-                                <h2>Contrat SLA</h2>
-                                <h3><span t-field="doc.name"/></h3>
-                            </div>
-                            <div class="col-6 text-right">
-                                <strong>Statut : </strong>
-                                <span t-field="doc.state"/>
-                                <br/>
-                                <strong>Type de service : </strong>
-                                <span t-field="doc.service_type"/>
+
+        <t t-foreach="docs" t-as="doc">
+            <t t-set="company" t-value="doc.company_id" />
+            <t t-set="res_company" t-value="doc.company_id" />
+            <t t-call="web.external_layout">
+                <t t-call="web.html_container">
+
+                    <div class="page" style="margin-top: 0; padding-top: 0;">
+                        <!-- EN-TÊTE avec logo et titre -->
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin: 0 0 20px 0; border-bottom: 3px solid #1a6496; padding-bottom: 15px;">
+                            <img t-if="doc.company_id.logo"
+                                t-att-src="'/web/image/res.company/%s/logo' % doc.company_id.id"
+                                style="max-height:50px;" />
+                            <div style="text-align: center; flex: 1;">
+                                <h2
+                                    style="margin:0; color:#1a6496; font-size:20px; text-transform:uppercase;">Contrat
+                                    SLA</h2>
+                                <p style="margin:4px 0 0 0; color:#555; font-size:12px;">
+                                    <span t-field="doc.name" />
+                                </p>
                             </div>
                         </div>
 
-                        <!-- Informations générales -->
-                        <div class="row mb-4">
-                            <div class="col-6">
-                                <table class="table table-sm table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="2" class="bg-light">Informations générales</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>Client</strong></td>
-                                            <td><span t-field="doc.partner_id"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Mission</strong></td>
-                                            <td><span t-field="doc.mission_id"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Périmètre géographique</strong></td>
-                                            <td><span t-field="doc.geo_scope"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Date de début</strong></td>
-                                            <td><span t-field="doc.start_date"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Date de fin</strong></td>
-                                            <td><span t-field="doc.end_date"/></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <!-- STATUT + TYPE -->
+                        <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+                            <div
+                                style="background: #f5f5f5; border-left: 4px solid #1a6496; padding: 8px 15px; flex: 1;">
+                                <small
+                                    style="color: #888; font-size: 10px; text-transform: uppercase;">
+                                    Statut</small>
+                                <div style="font-weight: bold; color: #1a6496;">
+                                    <span t-field="doc.state" />
+                                </div>
+                            </div>
+                            <div
+                                style="background: #f5f5f5; border-left: 4px solid #1a6496; padding: 8px 15px; flex: 1;">
+                                <small
+                                    style="color: #888; font-size: 10px; text-transform: uppercase;">Type
+                                    de service</small>
+                                <div style="font-weight: bold; color: #1a6496;">
+                                    <span t-field="doc.service_type" />
+                                </div>
                             </div>
                         </div>
+
+                        <!-- INFORMATIONS GÉNÉRALES -->
+                        <div
+                            style="background: #1a6496; color: white; padding: 6px 12px; margin-bottom: 0; font-weight: bold; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                            Informations générales
+                        </div>
+                        <table class="table table-sm table-bordered"
+                            style="margin-top: 0; margin-bottom: 20px;">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 25%; background: #f9f9f9;">
+                                        <strong>Client</strong>
+                                    </td>
+                                    <td style="width: 25%;">
+                                        <span t-field="doc.partner_id" />
+                                    </td>
+                                    <td style="width: 25%; background: #f9f9f9;">
+                                        <strong>Mission</strong>
+                                    </td>
+                                    <td style="width: 25%;">
+                                        <span t-field="doc.mission_id" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="background: #f9f9f9;">
+                                        <strong>Périmètre géographique</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.geo_scope" />
+                                    </td>
+                                    <td style="background: #f9f9f9;">
+                                        <strong>Date de début</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.start_date" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="background: #f9f9f9;">
+                                        <strong>Date de fin</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.end_date" />
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
 
                         <!-- SECTION RECRUTEMENT -->
                         <t t-if="doc.service_type == 'recruitment'">
-                            <h4 class="mt-4">Recrutement</h4>
-                            <div class="row">
-                                <div class="col-6">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr><th colspan="2" class="bg-light">Délais</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Prise en charge (h)</strong></td>
-                                                <td><span t-field="doc.take_charge_hours"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Short-list (jours)</strong></td>
-                                                <td><span t-field="doc.shortlist_days"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>1er entretien client (jours)</strong></td>
-                                                <td><span t-field="doc.first_interview_days"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Objectif time-to-fill (jours)</strong></td>
-                                                <td><span t-field="doc.time_to_fill_days_target"/></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-6">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr><th colspan="2" class="bg-light">Candidatures</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Nb CV minimum</strong></td>
-                                                <td><span t-field="doc.min_cv_shortlist"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Vérifications incluses</strong></td>
-                                                <td><span t-field="doc.checks_included"/></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div
+                                style="background: #1a6496; color: white; padding: 6px 12px; margin-bottom: 0; font-weight: bold; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                                Recrutement — Délais
                             </div>
-                            <div class="row mt-2">
-                                <div class="col-12">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr><th colspan="2" class="bg-light">Garantie et Remplacement</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Période de garantie (jours)</strong></td>
-                                                <td><span t-field="doc.guarantee_days"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Remplacement gratuit</strong></td>
-                                                <td>
-                                                    <span t-if="doc.free_replacement">Oui</span>
-                                                    <span t-else="">Non</span>
-                                                </td>
-                                            </tr>
-                                            <tr t-if="doc.free_replacement">
-                                                <td><strong>Nb remplacements inclus</strong></td>
-                                                <td><span t-field="doc.replacement_count_included"/></td>
-                                            </tr>
-                                            <tr t-if="doc.replacement_conditions">
-                                                <td><strong>Conditions de remplacement</strong></td>
-                                                <td><span t-field="doc.replacement_conditions"/></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <table class="table table-sm table-bordered"
+                                style="margin-top: 0; margin-bottom: 15px;">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 25%; background: #f9f9f9;">
+                                            <strong>Prise en charge (h)</strong>
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <span t-field="doc.take_charge_hours" />
+                                        </td>
+                                        <td style="width: 25%; background: #f9f9f9;">
+                                            <strong>Short-list (jours)</strong>
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <span t-field="doc.shortlist_days" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>1er entretien client (jours)</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.first_interview_days" />
+                                        </td>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Objectif time-to-fill (jours)</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.time_to_fill_days_target" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Nb CV minimum</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.min_cv_shortlist" />
+                                        </td>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Vérifications incluses</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.checks_included" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div
+                                style="background: #1a6496; color: white; padding: 6px 12px; margin-bottom: 0; font-weight: bold; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                                Garantie et Remplacement
                             </div>
+                            <table class="table table-sm table-bordered"
+                                style="margin-top: 0; margin-bottom: 20px;">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 25%; background: #f9f9f9;">
+                                            <strong>Période de garantie (jours)</strong>
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <span t-field="doc.guarantee_days" />
+                                        </td>
+                                        <td style="width: 25%; background: #f9f9f9;">
+                                            <strong>Remplacement gratuit</strong>
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <span t-if="doc.free_replacement">Oui</span>
+                                            <span t-else="">Non</span>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="doc.free_replacement">
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Nb remplacements inclus</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.replacement_count_included" />
+                                        </td>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Conditions de remplacement</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.replacement_conditions" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </t>
 
                         <!-- SECTION INTÉRIM -->
                         <t t-if="doc.service_type == 'temp_staffing'">
-                            <h4 class="mt-4">Intérim</h4>
-                            <div class="row">
-                                <div class="col-6">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr><th colspan="2" class="bg-light">Délais de mise à disposition</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Proposition candidat (h)</strong></td>
-                                                <td><span t-field="doc.candidate_proposal_hours"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Mise à disposition (h)</strong></td>
-                                                <td><span t-field="doc.deployment_hours"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Remplacement (h)</strong></td>
-                                                <td><span t-field="doc.replacement_hours"/></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-6">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr><th colspan="2" class="bg-light">Couverture</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Couverture horaire</strong></td>
-                                                <td><span t-field="doc.coverage_hours"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Astreinte</strong></td>
-                                                <td>
-                                                    <span t-if="doc.on_call">Oui</span>
-                                                    <span t-else="">Non</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div
+                                style="background: #1a6496; color: white; padding: 6px 12px; margin-bottom: 0; font-weight: bold; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                                Intérim — Délais de mise à disposition
                             </div>
-                            <div class="row mt-2">
-                                <div class="col-12">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr><th colspan="2" class="bg-light">Missions</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Durée minimale mission (jours)</strong></td>
-                                                <td><span t-field="doc.min_assignment_days"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Timesheet obligatoire</strong></td>
-                                                <td>
-                                                    <span t-if="doc.timesheet_required">Oui</span>
-                                                    <span t-else="">Non</span>
-                                                </td>
-                                            </tr>
-                                            <tr t-if="doc.temp_docs_included">
-                                                <td><strong>Documents inclus</strong></td>
-                                                <td><span t-field="doc.temp_docs_included"/></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <table class="table table-sm table-bordered"
+                                style="margin-top: 0; margin-bottom: 15px;">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 25%; background: #f9f9f9;">
+                                            <strong>Proposition candidat (h)</strong>
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <span t-field="doc.candidate_proposal_hours" />
+                                        </td>
+                                        <td style="width: 25%; background: #f9f9f9;">
+                                            <strong>Mise à disposition (h)</strong>
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <span t-field="doc.deployment_hours" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Remplacement (h)</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.replacement_hours" />
+                                        </td>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Couverture horaire</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.coverage_hours" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Astreinte</strong>
+                                        </td>
+                                        <td>
+                                            <span t-if="doc.on_call">Oui</span>
+                                            <span t-else="">Non</span>
+                                        </td>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Durée minimale mission (jours)</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.min_assignment_days" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Timesheet obligatoire</strong>
+                                        </td>
+                                        <td>
+                                            <span t-if="doc.timesheet_required">Oui</span>
+                                            <span t-else="">Non</span>
+                                        </td>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Documents inclus</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.temp_docs_included" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </t>
 
                         <!-- SECTION PAIE -->
                         <t t-if="doc.service_type == 'payroll'">
-                            <h4 class="mt-4">Paie</h4>
-                            <div class="row">
-                                <div class="col-6">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr><th colspan="2" class="bg-light">Calendrier</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Jour cutoff</strong></td>
-                                                <td><span t-field="doc.payroll_cycle_day"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Jour livraison bulletins</strong></td>
-                                                <td><span t-field="doc.payroll_delivery_day"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>SLA corrections (h)</strong></td>
-                                                <td><span t-field="doc.correction_sla_hours"/></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-6">
-                                    <table class="table table-sm table-bordered">
-                                        <thead>
-                                            <tr><th colspan="2" class="bg-light">Conformité</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Contrôles conformité</strong></td>
-                                                <td><span t-field="doc.compliance_checks"/></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div
+                                style="background: #1a6496; color: white; padding: 6px 12px; margin-bottom: 0; font-weight: bold; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                                Paie — Calendrier
                             </div>
+                            <table class="table table-sm table-bordered"
+                                style="margin-top: 0; margin-bottom: 15px;">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 25%; background: #f9f9f9;">
+                                            <strong>Jour cutoff</strong>
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <span t-field="doc.payroll_cycle_day" />
+                                        </td>
+                                        <td style="width: 25%; background: #f9f9f9;">
+                                            <strong>Jour livraison bulletins</strong>
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <span t-field="doc.payroll_delivery_day" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>SLA corrections (h)</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.correction_sla_hours" />
+                                        </td>
+                                        <td style="background: #f9f9f9;">
+                                            <strong>Contrôles conformité</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.compliance_checks" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </t>
 
-                        <!-- Signatures -->
-                        <div class="row mt-5">
-                            <div class="col-6 text-center">
-                                <p>________________________</p>
-                                <p><strong>Le Client</strong></p>
-                                <p><span t-field="doc.partner_id"/></p>
+                        <!-- SIGNATURES -->
+                        <div
+                            style="background: #1a6496; color: white; padding: 6px 12px; margin-bottom: 20px; font-weight: bold; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                            Signatures
+                        </div>
+                        <div style="display: flex; justify-content: space-around; margin-top: 40px;">
+                            <div style="text-align: center; width: 40%;">
+                                <div
+                                    style="border-bottom: 1px solid #333; margin-bottom: 8px; height: 50px;"></div>
+                                <strong>Le Client</strong>
+                                <p style="color: #555; font-size: 11px;">
+                                    <span t-field="doc.partner_id" />
+                                </p>
                             </div>
-                            <div class="col-6 text-center">
-                                <p>________________________</p>
-                                <p><strong>Le Prestataire</strong></p>
+                            <div style="text-align: center; width: 40%;">
+                                <div
+                                    style="border-bottom: 1px solid #333; margin-bottom: 8px; height: 50px;"></div>
+                                <strong>Le Prestataire</strong>
+                                <p style="color: #555; font-size: 11px;">
+                                    <span t-field="doc.mission_id.company_id.name" />
+                                </p>
                             </div>
                         </div>
 
+                        <!-- footer -->
+                        <div
+                            style="position: fixed; bottom: 0; left: 0; right: 0; border-top: 2px solid #1a6496; padding: 8px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #888;">
+                            <span>Contrat SLA — <span t-field="doc.name" /></span>
+                            <span t-field="doc.mission_id.company_id.name" />
+                        </div>
+
                     </div>
+
+
                 </t>
             </t>
         </t>
@@ -276,7 +349,7 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">sla_contract.report_sla_contract_document</field>
         <field name="report_file">sla_contract.report_sla_contract_document</field>
-        <field name="binding_model_id" ref="model_sla_contract"/>
+        <field name="binding_model_id" ref="model_sla_contract" />
         <field name="binding_type">report</field>
     </record>
 
