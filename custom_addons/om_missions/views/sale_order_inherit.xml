@@ -1,0 +1,90 @@
+<odoo>
+<data>
+    <record id="view_order_tree_inherit_mission" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.mission</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree" />
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="team_id" string="Équipe dédiée" />
+            </xpath> -->
+
+            <xpath expr="//field[@name='commitment_date']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="string">Crée par</attribute>
+            </xpath>
+
+            <!-- Hide activities ans company filed -->
+            <xpath expr="//field[@name='activity_ids']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+                <attribute name="invisible">1</attribute>
+                <attribute name="groups"></attribute>
+            </xpath>
+
+            <!-- Add Mission  -->
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="mission_name" string="Mission" />
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <record id="view_order_form_inherit_add_mission" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.mission</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='order_line']/tree/control/create[@name='add_product_control']"
+                position="attributes">
+                <attribute name="string">Ajouter une mission</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_template_id']" position="attributes">
+                <attribute name="string">Mission</attribute>
+                <attribute name="placeholder">Tapez pour trouver une mission</attribute>
+            </xpath>
+            <!-- product_template_id -->
+        </field>
+    </record>
+
+
+    <!-- Change Quotations(devis) View tree -->
+    <record id="view_quotation_tree_inherit_mission" model="ir.ui.view">
+        <field name="name">sale.quotation.tree.inherit.mission</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='commitment_date']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="string">Crée par</attribute>
+            </xpath>
+
+            <!-- Hide activities ans company filed -->
+            <xpath expr="//field[@name='activity_ids']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='company_id']" position="replace">
+            </xpath>
+
+            <!-- Add Mission  -->
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="mission_name" string="Mission" />
+            </xpath>
+
+        </field>
+    </record>
+    </data>
+
+</odoo>
