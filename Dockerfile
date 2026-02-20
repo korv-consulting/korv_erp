@@ -3,7 +3,7 @@ FROM odoo:17.0
 USER root
 
 # 1. TRADUCTION DE TES COMMANDES 'dnf install' (Version Debian/Ubuntu)
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     make \
@@ -15,9 +15,8 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     zlib1g-dev \
     libpq-dev \
-    nodejs \
-    npm \
-    && rm -rf /var/lib/apt/lists/*
+    curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # 2. INSTALLATION DU FRONTEND (rtlcss)
 RUN npm install -g rtlcss
