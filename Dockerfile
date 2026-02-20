@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxslt1-dev \
     libldap2-dev \
     libsasl2-dev \
-    libjpeg-dev \
+    libjpeg62-turbo-dev \
     zlib1g-dev \
     libpq-dev \
     curl \
