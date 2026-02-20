@@ -12,7 +12,6 @@
                     <field name="rccm"  string="RCCM/SIREN" placeholder="Ex: RCCM123456" invisible="not is_company" class="oe_inline"/>
                     <field name="nui"  string="NUI"  placeholder="Ex: NUI123456" invisible="not is_company" class="oe_inline"/>
                 </group>
-
             </xpath>
 
             <xpath expr="//div[@class='o_row']" position="after">
