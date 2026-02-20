@@ -12,8 +12,11 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
+
+RUN apt-get update && apt-get install -y nodejs npm
+
 # 2. INSTALLATION DU FRONTEND (rtlcss)
-RUN npm install -g rtlcss || (apt-get update && apt-get install -y nodejs npm && npm install -g rtlcss)
+RUN npm install -g rtlcss
 
 # 3. PRÉPARATION DE TON PROJET
 WORKDIR /opt/odoo
