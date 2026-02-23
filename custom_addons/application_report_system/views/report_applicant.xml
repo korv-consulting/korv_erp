@@ -108,7 +108,7 @@
         </tr>
         <t t-foreach="doc.evaluation_line_ids" t-as="line">
             <tr>
-                <td><t t-esc="line.criteria_id.criteria"/></td>
+                <td><t t-esc="line.criteria_id.name"/></td>
                 <td><t t-esc="line.summary or '-'"/></td>
                 <td><t t-esc="line.description or '-'"/></td>
             </tr>

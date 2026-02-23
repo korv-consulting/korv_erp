@@ -7,11 +7,11 @@
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
 
-            <xpath expr="//div[@name='vat_vies_container']" position="after">
-
-                <field name="rccm" string="RCCM / SIREN" placeholder="Ex : RCCM123456" invisible="not is_company"/>
-                <field name="nui" placeholder="Ex : NUI123456" invisible="not is_company"/>
-
+            <xpath expr="//field[@name='vat']" position="after">
+                <group>
+                    <field name="rccm"  string="RCCM/SIREN" placeholder="Ex: RCCM123456" invisible="not is_company" class="oe_inline"/>
+                    <field name="nui"  string="NUI"  placeholder="Ex: NUI123456" invisible="not is_company" class="oe_inline"/>
+                </group>
             </xpath>
 
             <xpath expr="//div[@class='o_row']" position="after">
