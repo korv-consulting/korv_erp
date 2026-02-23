@@ -9,6 +9,9 @@
     'data': [
         'views/crm_custom_views.xml',
         'views/crm_custom_client_views.xml',
+        'views/activity_area_views.xml',
+        'views/company_size_views.xml',
+        'views/contract_type_views.xml',
         'security/ir.model.access.csv',
         'security/rules.xml',
     ],

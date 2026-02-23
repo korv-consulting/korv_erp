@@ -49,7 +49,7 @@
                     <field name="employee_id"/>
                 </xpath>
 
-                 <xpath expr="//page[@name='internal_notes']" position="attributes">
+                <xpath expr="//page[@name='internal_notes']" position="attributes">
                     <attribute name="string">Description du besoin</attribute>
                 </xpath>
 

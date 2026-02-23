@@ -1,0 +1,28 @@
+<odoo>
+    <record id="view_crm_company_size_tree" model="ir.ui.view">
+        <field name="name">crm.company_size.tree</field>
+        <field name="model">crm.company_size</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" sample="1">
+                <field name="name"/>
+                <field name="slug"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_crm_company_size" model="ir.actions.act_window">
+        <field name="name">Tailles d'entreprise</field>
+        <field name="res_model">crm.company_size</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Définissez les segments de taille (ex: PME, TPE, GE).</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_crm_company_size"
+              name="Tailles d'entreprise"
+              action="action_crm_company_size"
+              parent="crm.crm_menu_config"
+              sequence="21"/>
+</odoo>

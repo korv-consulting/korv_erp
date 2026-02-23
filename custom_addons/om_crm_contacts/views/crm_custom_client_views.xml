@@ -7,11 +7,38 @@
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
 
-            <xpath expr="//div[@name='vat_vies_container']" position="after">
+            <xpath expr="//field[@name='vat']" position="after">
+                <group>
+                    <field name="rccm"  string="RCCM/SIREN" placeholder="Ex: RCCM123456" invisible="not is_company" class="oe_inline"/>
+                    <field name="nui"  string="NUI"  placeholder="Ex: NUI123456" invisible="not is_company" class="oe_inline"/>
+                </group>
+            </xpath>
 
-                <field name="rccm" string="RCCM / SIREN" placeholder="Ex : RCCM123456" invisible="not is_company"/>
-                <field name="nui" placeholder="Ex : NUI123456" invisible="not is_company"/>
+            <xpath expr="//div[@class='o_row']" position="after">
+                <group>
+                    <field name="activity_area_id"/>
+                    <field name="company_size_id"/>
+                </group>
+            </xpath>
 
+            <xpath expr="//page[@name='contact_addresses']" position="attributes">
+                    <attribute name="string">Contacts</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='sales_purchases']" position="attributes">
+                    <attribute name="string">Suivi</attribute>
+            </xpath>
+
+             <xpath expr="//page[@name='sales_purchases']//group[@name='sale']" position="attributes">
+                    <attribute name="string">Direction commerciale</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='misc']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='purchase']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
 
             <xpath expr="//div[contains(@class,'o_address_format')]//field[@name='state_id']" 
@@ -24,12 +51,23 @@
                 <attribute name="placeholder">Région / État</attribute>
             </xpath>
 
-            <xpath expr="//page[@name='sales_purchases']//group[@name='container_row_2']//group[@name='sale']//field[@name='team_id']" position="attributes">
+           <xpath expr="//field[@name='team_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
 
+            <xpath expr="(//field[@name='team_id'])[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
             <xpath expr="//page[@name='sales_purchases']//group[@name='container_row_2']//group[@name='sale']//field[@name='user_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='contact_addresses']//p[3]/span" position="replace">
+                <span>
+                    Adresse préférée pour toutes les prestations.
+                    Sélectionnée par défaut lorsque vous créez une prestation pour cette société.
+                </span>
             </xpath>
 
             <xpath expr="//page[@name='sales_purchases']//group[@name='container_row_2']//group[@name='sale']//field[@name='user_id']" position="after">
