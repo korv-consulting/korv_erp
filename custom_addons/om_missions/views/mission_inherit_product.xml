@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit product.template form to show a linked mission field -->
+    <record id="product_template_form_inherit_mission" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.mission</field>
+        <field name="model">product.template</field>
+        <!-- inherit the standard product form; this external id is present in Odoo product module -->
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <!-- Add the mission field into the main sheet - safe position inside an existing group -->
+            <header>
+                <field name="state" widget="statusbar" options="{'clickable': '1'}" />
+            </header>
+
+            <!-- Modifier nom du produit par "Nom de la mission" - use hasclass() to target the
+            title block
+                 More robust than a plain //field[@name='name'] since other modules may alter the form. -->
+            <xpath expr="//div[hasclass('oe_title')]//field[@name='name']" position="attributes">
+                <attribute name="string">Intitulé de la mission</attribute>
+                <attribute name="placeholder"></attribute>
+            </xpath>
+            <!-- Update the visible label element inside the title block (the base view uses a
+            separate <label for="name"/>) -->
+            <xpath expr="//div[hasclass('oe_title')]/label[@for='name']" position="attributes">
+                <attribute name="string">Intitulé de la mission</attribute>
+            </xpath>
+
+            <!-- Retirer l'image -->
+            <xpath expr="//field[@name='image_1920']" position="replace">
+            </xpath>
+
+
+            <!-- Insert mission link and related fields directly below the product name -->
+            <xpath expr="//div[contains(@class, 'oe_title')]" position="after">
+                <!-- Add CSS to safely hide barcode label/input without brittle xpaths -->
+                <div class="o_mission_hide_barcode_css">
+                    <div>
+                        <style type="text/css">
+                            /* Hide barcode label and input inside product form */
+                            label[for^="barcode"], input[id^="barcode"],
+                            /* Hide internal reference (default_code) label/input */
+                            label[for^="default_code"], input[id^="default_code"],
+                            [id^="default_code"],
+                            /* Hide attribute / variants related controls (fallback selectors) */
+                            label[for^="attribute"], input[id^="attribute"], [id*="attribute_line"],
+                            .o_variant, .o_variants, .o_product_variant_table,
+                            label[for^="product_variant"], input[id^="product_variant"],
+                            /* Hide product tags widget fallback selectors */
+                            label[for^="product_tag_ids"], [id^="product_tag_ids"], .o_tag, .o_tags,
+                            .o_input_tag, .o_tag_widget
+                            { display: none !important; }
+                        </style>
+                    </div>
+                </div>
+                <group>
+                    <group>
+                        <field name="categorie" />
+                        <field name="contract_type_id" />
+                        <field name="start_date" />
+                    </group>
+                    <group>
+                        <field name="partner_id" />
+                        <field name="reference" />
+                        <field name="end_date" />
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Ajouter des champs avant type du produit -->
+            <xpath expr="//field[@name='detailed_type']" position="before">
+                <field name="description_mission" />
+            </xpath>
+
+            <!-- Hide the 'Can be Sold' and 'Can be Purchased' checkboxes on the product form -->
+            <xpath expr="//field[@name='sale_ok']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='purchase_ok']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+
+            <!-- Étiquettes: hide the tag field itself (safer than hiding the whole page which may
+            contain other fields) -->
+            <xpath expr="//field[@name='product_tag_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Masquer Société -->
+            <xpath expr="//page[@name='general_information']//field[@name='company_id']"
+                position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Type de produit  -->
+            <xpath expr="//field[@name='detailed_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Masquer la catégorie de produit -->
+            <xpath expr="//field[@name='categ_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Ensure invoice_policy has a visible label for missions -->
+            <xpath expr="//field[@name='invoice_policy']" position="attributes">
+                <attribute name="string">Politique de facturation</attribute>
+            </xpath>
+
+            <!-- Ajouter work_location avant categorie de produits -->
+            <xpath expr="//field[@name='categ_id']" position="before">
+                <field name="work_location" />
+            </xpath>
+
+            <!-- Cacher l'onglet Ventes -->
+            <xpath expr="//page[@name='sales']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Cacher l'onglet Achats -->
+            <xpath expr="//page[@name='purchase']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Cacher l'onglet Comptabilité -->
+            <xpath expr="//page[@name='invoicing']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+
+            <!-- Ajouter l'onglet "Autres" -->
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page string="Autres">
+                    <group>
+                        <group>
+                            <field name="work_time" />
+                        </group>
+                        <group>
+                            <field name="affiliated_site" />
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="work_conditions" />
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <!-- Cacher l'onglet Attibutes & variantes -->
+    <record id="product_template_form_inherit_mission_2" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.mission</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//page[@name='variants']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//sheet" position="inside">
+                <style>
+                    /* On cache brutalement le bouton par son nom technique */
+                    button[name="238"] {
+                    display: none !important;
+                    }
+                </style>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Also add the mission column to product tree/list views so it's visible in lists -->
+    <record id="product_template_tree_inherit_mission" model="ir.ui.view">
+        <field name="name">product.template.tree.inherit.mission</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="string">Missions</attribute>
+            </xpath>
+            <xpath expr="//tree" position="inside">
+                <field name="state" widget="badge" decoration-success="state == 'done'"
+                    decoration-warning="state == 'draft'" decoration-info="state == 'confirmed'"
+                    decoration-primary="state == 'in_progress'"
+                    decoration-danger="state == 'cancel'" />
+            </xpath>
+            <!-- Replace internal product reference (default_code) with mission reference -->
+            <xpath expr="//field[@name='default_code']" position="replace">
+                <field name="categorie" widget="badge"
+                    decoration-success="categorie == 'recruitment'"
+                    decoration-info="categorie == 'software'"
+                    decoration-primary="categorie == 'outsourcing'" />
+                <field name="reference" string="Référence de la mission" />
+                <field name="partner_id" />
+                <field name="start_date" />
+                <field name="end_date" />
+            </xpath>
+            <!-- Étiquettes -->
+            <xpath expr="//field[@name='product_tag_ids']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+
+
+        </field>
+    </record>
+
+    <!-- Vue Kanban: replace product image with client logo when partner set -->
+    <record id="product_template_kanban_inherit_mission" model="ir.ui.view">
+        <field name="name">product.template.kanban.inherit.mission</field>
+        <field name="model">product.template</field>
+        <!-- Inherit the canonical product kanban view -->
+        <field name="inherit_id" ref="product.product_template_kanban_view" />
+        <field name="arch" type="xml">
+
+            <!-- Add the state badge like in other views -->
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="sample">1</attribute>
+                <attribute name="default_group_by">state</attribute>
+                <attribute name="quick_create">false</attribute>
+                <attribute name="string">Missions</attribute>
+            </xpath>
+
+            <xpath expr="//kanban" position="inside">
+                <field name="partner_id" />
+                <field name="state" />
+                <field name="reference" />
+                <field name="default_code" />
+            </xpath>
+
+            <!-- Replace the product image block to show partner logo when available, otherwise
+            fallback to product image -->
+            <xpath expr="//div[contains(@class, 'o_kanban_image')]" position="replace">
+                <div class="o_kanban_image me-1">
+                    <t t-if="record.partner_id.raw_value">
+                        <img
+                            t-att-src="kanban_image('res.partner', 'image_128', record.partner_id.raw_value)"
+                            alt="Logo client"
+                            class="o_image_64_contain" />
+                    </t>
+                    <t t-else="">
+                        <img
+                            t-att-src="kanban_image('product.template', 'image_128', record.id.raw_value)"
+                            alt="Product image"
+                            class="o_image_64_contain" />
+                    </t>
+                </div>
+            </xpath>
+
+            <!-- Replace reference interne par reference de la mission -->
+            <xpath expr="//div[contains(@class, 'oe_kanban_details')]//field[@name='default_code']"
+                position="replace">
+                <field name="reference" />
+            </xpath>
+
+
+            <!-- Optionally add client name , the state badge inside the kanban card details -->
+            <xpath
+                expr="//div[contains(@class,'oe_kanban_card')]/div[contains(@class,'oe_kanban_details')]"
+                position="inside">
+                <div class="mb-1 text-muted fw-bold"> Client : <field name="partner_id" />
+                </div>
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    <field name="categorie" widget="badge"
+                        decoration-success="categorie == 'recruitment'"
+                        decoration-info="categorie == 'software'"
+                        decoration-primary="categorie == 'outsourcing'" />
+                    <!-- couleur bleue si renseigné -->
+                    <field name="contract_type_id" widget="badge"
+                        decoration-danger="contract_type_id" />
+                </div>
+
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vue Search -->
+    <record id="product_template_search_inherit_mission" model="ir.ui.view">
+        <field name="name">product.template.search.inherit.mission</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view" />
+        <field name="arch" type="xml">
+            <!-- Hide default product type filters since we're repurposing them for mission
+            categories -->
+            <xpath expr="//filter[@name='services']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//filter[@name='consumable']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- add filter by category -->
+            <xpath expr="//filter[@name='consumable']" position="after">
+                <filter string="Recrutement" name="cat_recruitment"
+                    domain="[('categorie', '=', 'recruitment')]" />
+                <filter string="Developpement logiciel" name="cat_software"
+                    domain="[('categorie', '=', 'software')]" />
+                <filter string="OutSourcing" name="cat_outsourcing"
+                    domain="[('categorie', '=', 'outsourcing')]" />
+                <separator />
+            </xpath>
+
+
+            <!-- Hide the 'Can be Sold' and 'Can be Purchased' checkboxes on the product form -->
+            <xpath expr="//filter[@name='filter_to_sell']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//filter[@name='filter_to_purchase']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+
+            <xpath expr="//filter[@name='filter_to_sell']" position="after">
+                <filter string="Confirmée" name="missions_confirmed"
+                    domain="[('state', '=', 'confirmed')]" />
+                <filter string="En cours" name="missions_in_progress"
+                    domain="[('state', '=', 'in_progress')]" />
+                <filter string="Terminée" name="missions_done"
+                    domain="[('state', '=', 'done')]" />
+                <filter string="Annulée" name="missions_cancelled"
+                    domain="[('state', '=', 'cancel')]" />
+                <filter string="Brouillon" name="missions_draft"
+                    domain="[('state', '=', 'draft')]" />
+                <separator />
+
+            </xpath>
+
+
+            <xpath expr="//filter[@name='type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//filter[@name='categ_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group" position="inside">
+                <filter string="Par État" name="group_by_state" context="{'group_by': 'state'}" />
+                <filter string="Par Catégorie" name="group_by_categorie"
+                    context="{'group_by': 'categorie'}" />
+                <filter string="Par Type de Contrat" name="group_by_contract_type"
+                    context="{'group_by': 'contract_type_id'}" />
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <!-- Create Menu Mission which herit from products  -->
+     <record id="product.product_template_action" model="ir.actions.act_window">
+    <field name="name">Missions</field>
+    <field name="context">{}</field> </record>
+    <data>
+        <menuitem id="sale.product_menu_catalog" name="Missions" parent="sale.sale_menu_root"
+            sequence="1" active="True"
+        />
+        <menuitem id="sale.menu_product_template_action"
+            name="All Missions"
+            parent="sale.product_menu_catalog"
+            sequence="1"
+            active="True" action="product.product_template_action"
+        />
+
+        <menuitem id="sale.menu_products" active="False" />
+    </data>
+
+
+    <!-- Deselectionner le filtre par défaut -->
+    <function model="ir.actions.act_window" name="write">
+        <value eval="[ref('product.product_template_action_all')]" />
+        <value eval="{'context': '{}'}" />
+    </function>
+
+    <record id="product.product_template_action_all" model="ir.actions.act_window">
+        <field name="context">{}</field>
+    </record>
+
+    <record id="sale.product_template_action" model="ir.actions.act_window">
+        <field name="context">{}</field>
+    </record>
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_activity_area_tree" model="ir.ui.view">
+        <field name="name">activity.area.tree</field>
+        <field name="model">crm.activity_area</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" sample="1" multi_edit="1">
+                <field name="name"/>
+                <field name="slug"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_activity_area" model="ir.actions.act_window">
+        <field name="name">Secteurs d'activité</field>
+        <field name="res_model">crm.activity_area</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Définissez vos secteurs d'activité ici.
+            </p>
+            <p>
+                Ils seront sélectionnables sur vos fiches clients/pistes.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_crm_activity_area"
+              name="Secteurs d'activité"
+              action="action_activity_area"
+              parent="crm.crm_menu_config"
+              sequence="20"/>
+</odoo>

@@ -1,0 +1,22 @@
+// Couleur principale
+$o-brand-primary: #1a237e;
+
+// Navbar (header du haut)
+.o_main_navbar {
+    background-color: #1a237e !important;
+}
+
+// Texte menu
+.o_main_navbar .o_menu_brand,
+.o_main_navbar .dropdown-toggle {
+    color: #ffffff !important;
+}
+
+// Sidebar (optionnel)
+.o_menu_sections {
+    background-color: #1a237e !important;
+}
+
+.o_web_client {
+    background-color: #1a237e !important;
+}

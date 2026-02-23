@@ -6,6 +6,7 @@ __pycache__/
 venv/
 .env/
 .venv/
+korv_env/
 .korv_env/
 
 # Logs
@@ -30,3 +31,4 @@ node_modules/
 .idea/
 .DS_Store
 Thumbs.db
+odoo.conf
