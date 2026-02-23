@@ -29,7 +29,8 @@ EXPOSE 8069
 # 6. Préparer le dossier de travail et copier le projet
 WORKDIR /opt/odoo
 # On copie TOUT ton projet dans /opt/odoo (donc ton odoo.conf et ton custom_addons)
-COPY . /opt/odoo
+# COPY . /opt/odoo
+COPY --chown=odoo:odoo . /opt/odoo
 
 # 7. On installe tes dépendances
 RUN pip3 install pip==22.0.4 && pip3 install -r /opt/odoo/requirements.txt
