@@ -359,7 +359,7 @@
             sequence="1" active="True"
         />
         <menuitem id="sale.menu_product_template_action"
-            name="Toutes les Missions"
+            name="All Missions"
             parent="sale.product_menu_catalog"
             sequence="1"
             active="True" action="product.product_template_action"
