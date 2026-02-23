@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Boutons SLA sur le bon de commande -->
+    <record id="view_order_form_inherit_sla" model="ir.ui.view">
+        <field name="name">sale.order.form.sla</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <!-- Champ technique caché has_sla pour gerer les boutons SLA -->
+                <field name="has_sla" invisible="1"/>
+
+                <!-- Quand il n'y a pas encore de SLA -->
+                <button
+                    name="action_open_sla_contract"
+                    type="object"
+                    string="Créer SLA"
+                    class="btn-secondary"
+                    invisible="has_sla"
+                />
+                <!-- Quand un SLA existe déjà -->
+                <button
+                    name="action_open_sla_contract"
+                    type="object"
+                    string="Voir / Mettre à jour le SLA"
+                    class="btn-secondary"
+                    invisible="not has_sla"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+
