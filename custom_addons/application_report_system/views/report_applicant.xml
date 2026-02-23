@@ -34,7 +34,7 @@
 <div class="page">
 
 <!-- HEADER -->
-<t t-set="korv_work_company" t-value="env['res.company'].search([('name','=','KORV WORK')], limit=1)"/>
+<!-- <t t-set="korv_work_company" t-value="env['res.company'].search([('name','=','KORV WORK')], limit=1)"/>
 <table style="width:100%; margin-bottom:20px;">
     <tr>
         <td style="width:50%; text-align:left;">
@@ -48,7 +48,7 @@
                  style="height:60px;"/>
         </td>
     </tr>
-</table>
+</table> -->
 
 <h2 style="text-align:center;">RAPPORT D’EVALUATION CANDIDAT</h2>
 
