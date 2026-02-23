@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
 
-            <xpath expr="//label[@for='vat']" position="before">
+            <xpath expr="//field[@name='vat']" position="before">
                 <group>
                     <field name="rccm"  string="RCCM/SIREN" placeholder="Ex: RCCM123456" invisible="not is_company" class="oe_inline"/>
                     <field name="nui"  string="NUI"  placeholder="Ex: NUI123456" invisible="not is_company" class="oe_inline"/>
