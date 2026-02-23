@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Tree View for SLA Contracts -->
+    <!-- Tree View pour la liste des SLA -->
     <record id="view_sla_contract_tree" model="ir.ui.view">
         <field name="name">sla.contract.tree</field>
         <field name="model">sla.contract</field>
@@ -16,7 +16,7 @@
         </field>
     </record>
 
-    <!-- Form View for SLA Contracts -->
+    <!-- Form View pour la création et la modification des SLA -->
     <record id="view_sla_contract_form" model="ir.ui.view">
         <field name="name">sla.contract.form</field>
         <field name="model">sla.contract</field>
@@ -125,7 +125,7 @@
         </field>
     </record>
 
-    <!-- Action window pour gérer les SLA -->
+    <!-- Action window pour la liste des SLA -->
     <record id="action_sla_contract" model="ir.actions.act_window">
         <field name="name">SLA Contracts</field>
         <field name="res_model">sla.contract</field>

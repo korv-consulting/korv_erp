@@ -69,7 +69,7 @@ class SaleOrder(models.Model):
             'res_id': False,
         })
 
-        # Construire un context propre 
+        # Construire un context propre  pour pré-remplir les champs du nouveau SLA
         ctx = dict(self.env.context or {})
         ctx.update({
             'default_mission_id': self.id,
