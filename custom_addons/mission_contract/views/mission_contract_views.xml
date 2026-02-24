@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Ajout des champs de contrat de mission sur le formulaire de commande -->
+    <record id="view_order_form_inherit_mission_fields" model="ir.ui.view">
+        <field name="name">sale.order.form.mission_fields</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Contrat de mission"
+                      attrs="{'invisible': [('is_contract', '=', False)]}">
+                    <group>
+                        <group>
+                            <field name="is_contract"/>
+                            <field name="mission_object"/>
+                            <field name="mission_location"/>
+                        </group>
+                        <group>
+                            <field name="contract_start_date"/>
+                            <field name="contract_end_date"/>
+                            <field name="termination_notice"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="payment_terms_desc"/>
+                    </group>
+                    <group>
+                        <field name="specific_clauses"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
