@@ -1,16 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="view_hr_applicant_form_inherit_report" model="ir.ui.view">
         <field name="name">hr.applicant.form.inherit.report</field>
         <field name="model">hr.applicant</field>
         <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
         <field name="arch" type="xml">
+
+            <!-- ✅ 1. Injecter job_id dans le form principal -->
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="job_id" invisible="1"/>
+            </xpath>
+
+            <!-- ✅ 2. Ajouter ton onglet -->
             <xpath expr="//notebook" position="inside">
                 <page string="Rapport Cabinet" name="rapport_cabinet">
 
                     <group string="Informations complémentaires">
                         <group>
-                            <field name="job_id" invisible="1"/>
                             <field name="last_degree"/>
                             <field name="candidate_location"/>
                             <field name="job_location"/>
@@ -23,53 +28,28 @@
                     </group>
 
                     <group string="Synthèse Executive">
-                        <field name="executive_summary"
-                               widget="html"
-                               options="{'style': 'width: 100%; height: 150px'}"/>
+                        <field name="executive_summary" widget="html"/>
                     </group>
 
                     <separator string="Grille d'évaluation détaillée"/>
 
                     <field name="evaluation_line_ids" nolabel="1" colspan="4">
-    <tree editable="bottom">
-        <field name="sequence" widget="handle"/>
-        <field name="criteria_id"
-               context="{'default_job_id': id}"  
-               domain="[('job_id','=',id)]"/>
-        <field name="summary"/>
-        <field name="description"/>
-    </tree>
-
-    <form>
-        <sheet>
-            <group>
-                <field name="criteria_id"
-                       context="{'default_job_id': id}"
-                       domain="[('job_id','=',id)]"/>
-                <field name="summary"/>
-            </group>
-            <field name="description"
-                   widget="html"
-                   colspan="4"
-                   options="{'style':'height:200px'}"/>
-        </sheet>
-    </form>
-</field>
-
-
-
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="criteria_id" domain="[('job_id','=',parent.job_id)]"/>
+                            <field name="summary"/>
+                            <field name="description"/>
+                        </tree>
+                    </field>
 
                     <group string="Conclusion">
-                        <field name="firm_opinion"
-                               widget="html"
-                               options="{'style': 'width: 100%; height: 150px'}"/>
-                        <field name="next_steps"
-                               widget="html"
-                               options="{'style': 'width: 100%; height: 150px'}"/>
+                        <field name="firm_opinion" widget="html"/>
+                        <field name="next_steps" widget="html"/>
                     </group>
 
                 </page>
             </xpath>
+
         </field>
     </record>
 </odoo>

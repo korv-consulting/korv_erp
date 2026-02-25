@@ -9,11 +9,11 @@ db_host = ${DB_HOST}
 db_port = ${DB_PORT}
 db_user = ${DB_USER}
 db_password = ${DB_PASSWORD}
-admin_passwd = superadmin123
+admin_passwd = ${ADMIN_PASSWORD}
 addons_path = addons, custom_addons
 proxy_mode = True
 
 EOF
 
 # Lancer Odoo
-exec odoo
+exec odoo -c /etc/odoo/odoo.conf -d ${DB_NAME} --without-demo=all
