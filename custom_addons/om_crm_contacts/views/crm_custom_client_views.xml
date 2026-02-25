@@ -7,17 +7,17 @@
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
 
-            <xpath expr="//field[@name='vat']" position="after">
-                <group>
-                    <field name="rccm"  string="RCCM/SIREN" placeholder="Ex: RCCM123456" invisible="not is_company" class="oe_inline"/>
-                    <field name="nui"  string="NUI"  placeholder="Ex: NUI123456" invisible="not is_company" class="oe_inline"/>
+            <xpath expr="//div[@class='o_row']" position="after">
+                <group name="company_info">
+                    <field name="activity_area_id" class="oe_inline"/>
+                    <field name="company_size_id" class="oe_inline"/>
                 </group>
             </xpath>
 
-            <xpath expr="//div[@class='o_row']" position="after">
-                <group>
-                    <field name="activity_area_id"/>
-                    <field name="company_size_id"/>
+            <xpath expr="//field[@name='vat']" position="after">
+                <group name="company_identification">
+                    <field name="rccm"  string="RCCM/SIREN" placeholder="Ex: RCCM123456" invisible="not is_company"/>
+                    <field name="nui"  string="NUI"  placeholder="Ex: NUI123456" invisible="not is_company"/>
                 </group>
             </xpath>
 
@@ -93,6 +93,7 @@
             <xpath expr="//field[@name='user_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+
 
         </field>
     </record>
