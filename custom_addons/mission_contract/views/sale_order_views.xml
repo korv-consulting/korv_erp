@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Bouton contrat de mission sur le bon de commande -->
+    <!-- Bouton contrat de mission sur le bon d'une misssion -->
     <record id="view_order_form_inherit_mission_contract" model="ir.ui.view">
         <field name="name">sale.order.form.mission_contract</field>
         <field name="model">sale.order</field>
@@ -15,11 +15,9 @@
                     type="object"
                     string="Imprimer le contrat de mission"
                     class="btn-secondary"
-                    attrs="{'invisible': ['|', ('state', 'not in', ('sale', 'done')), ('is_contract', '=', False)]}"
                 />
             </xpath>
         </field>
     </record>
 
 </odoo>
-

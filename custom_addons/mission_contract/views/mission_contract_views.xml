@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Ajout des champs de contrat de mission sur le formulaire de commande -->
+    <!-- Ajout des champs de contrat de mission sur le formulaire d'une mission -->
     <record id="view_order_form_inherit_mission_fields" model="ir.ui.view">
         <field name="name">sale.order.form.mission_fields</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet/notebook" position="inside">
+            <xpath expr="//notebook" position="before">
+                <!-- Checkbox always visible to activate le mode contrat de mission -->
+                <group>
+                    <field name="is_contract"/>
+                </group>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
                 <page string="Contrat de mission"
-                      attrs="{'invisible': [('is_contract', '=', False)]}">
+                      invisible="not is_contract">
                     <group>
                         <group>
                             <field name="is_contract"/>

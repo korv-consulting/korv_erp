@@ -44,7 +44,7 @@
                                         <strong>Référence commande</strong>
                                     </td>
                                     <td style="width:25%;">
-                                        <span t-field="doc.client_order_ref"/>
+                                        <span t-field="doc.name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -161,4 +161,3 @@
     </record>
 
 </odoo>
-
