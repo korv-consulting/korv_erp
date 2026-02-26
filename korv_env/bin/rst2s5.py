@@ -1,6 +1,6 @@
-#!/home/danson/Workspace/CRM/korv_erp/korv_env/bin/python3.10
+#!/home/korvconsulting/Documents/KORV_CONSULTING/korv_erp/korv_env/bin/python3.13
 
-# $Id: rst2s5.py 4564 2006-05-21 20:44:42Z wiemann $
+# $Id: rst2s5.py 9115 2022-07-28 17:06:24Z milde $
 # Author: Chris Liechti <cliechti@gmx.net>
 # Copyright: This module has been placed in the public domain.
 
@@ -12,7 +12,7 @@ the S5 template system.
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 from docutils.core import publish_cmdline, default_description
