@@ -86,9 +86,9 @@
         <field name="arch" type="xml">
 
             <!-- Masquer les Contacts liés aux Employés -->
-            <xpath expr="//tree" position="attributes">
+            <!-- <xpath expr="//tree" position="attributes">
                 <attribute name="domain">[('employee_ids','=',False)]</attribute>
-            </xpath>
+            </xpath> -->
 
             <xpath expr="//field[@name='complete_name']" position="after">
                 <field name="rccm"/>

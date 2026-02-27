@@ -17,6 +17,12 @@ class CrmLead(models.Model):
 
     company_size_id = fields.Many2one('crm.company_size', string="Taille de l'entreprise")
 
+    company_revenue = fields.Float(string="Chiffre d'affaire")
+    
+    company_creation_date = fields.Date(string="Date de création de l'entreprise")
+
+    number_of_employees = fields.Selection([('1-10', '1 - 10'), ('11-50', '11 - 50'), ('51-200', '51 - 200'),  ('201-500', '201 - 500'), ('501-1000', '501 - 1 000'), ('1 001-5 000', '1 001 - 5 000'), ('5 001-10 000', '5 001 - 10 000'), ('more10k', '+ 10 000')], string="Nombre d’employés", tracking=True)
+
     # Fields for Lead qualification
     perceived_interest_level = fields.Selection([('low', 'Faible'), ('medium', 'Moyen'), ('high', 'Fort')], string='Niveau d\'intérêt perçu', tracking=True)
     perceived_urgency_level = fields.Selection([('low', 'Faible'), ('medium', 'Moyen'), ('high', 'Fort')], string='Niveau d\'urgence perçu', tracking=True)
