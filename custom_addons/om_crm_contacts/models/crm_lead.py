@@ -1,4 +1,7 @@
-from odoo import models, fields
+from odoo import models, fields, api
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
@@ -101,4 +104,44 @@ class CrmLead(models.Model):
     upsell_done = fields.Boolean(string="Upsell réalisé", tracking=True)
     cross_sell_done = fields.Boolean(string="Cross-sell réalisé", tracking=True)
 
-    
+    # Remplit automatiquement le champ 'Nom du contact / Société' (partner_name) avec la valeur du champ 'name' du Lead lors de la modification du nom du Lead
+    @api.onchange('name')
+    def _onchange_name_fill_partner(self):
+        for record in self:
+            if record.name:
+
+                # Remplit le champ 'Nom du contact / Société' (partner_name)
+                record.partner_name = record.name
+
+    def write(self, vals):
+        # 1. On exécute l'écriture standard sur le Lead
+        result = super(CrmLead, self).write(vals)
+
+        # 2. Définition du mapping des noms qui diffèrent entre les deux modèles
+        # (Le CRM utilise souvent 'email_from' là où le partenaire utilise 'email')
+        field_mapping = {
+            'email_from': 'email',
+            'contact_name': 'name',
+            # Ajoutez ici d'autres exceptions si nécessaire
+        }
+
+        # 3. Identifier les champs modifiés qui existent aussi chez le partenaire
+        partner_model = self.env['res.partner']
+        sync_vals = {}
+        
+        for field_name, value in vals.items():
+            # Déterminer le nom du champ cible sur res.partner
+            target_field = field_mapping.get(field_name, field_name)
+            
+            # Si le champ existe sur res.partner, on le prépare pour la synchro
+            if target_field in partner_model._fields:
+                sync_vals[target_field] = value
+
+        # 4. Appliquer la mise à jour aux partenaires liés
+        if sync_vals:
+            for lead in self:
+                if lead.partner_id:
+                    # On utilise write() sur le partenaire avec les valeurs filtrées
+                    lead.partner_id.write(sync_vals)
+        
+        return result
