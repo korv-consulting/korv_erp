@@ -14,9 +14,9 @@
                         <!-- EN-TÊTE avec logo et titre -->
                         <div
                             style="display: flex; justify-content: space-between; align-items: center; margin: 0 0 20px 0; border-bottom: 3px solid #1a6496; padding-bottom: 15px;">
-                            <img t-if="doc.company_id.logo"
+                            <!-- <img t-if="doc.company_id.logo"
                                 t-att-src="'/web/image/res.company/%s/logo' % doc.company_id.id"
-                                style="max-height:50px;" />
+                                style="max-height:50px;" /> -->
                             <div style="text-align: center; flex: 1;">
                                 <h2
                                     style="margin:0; color:#1a6496; font-size:20px; text-transform:uppercase;">Contrat
