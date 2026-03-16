@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_mission_contract_document">
+        <t t-foreach="docs" t-as="doc">
+            <t t-set="company" t-value="doc.company_id"/>
+            <t t-set="res_company" t-value="doc.company_id"/>
+            <t t-call="web.external_layout">
+                <t t-call="web.html_container">
+
+                    <div class="page" style="margin-top: 0; padding-top: 0;">
+
+                        <!-- EN-TÊTE -->
+                        <div style="display:flex; justify-content:space-between; align-items:center;
+                                    margin:0 0 20px 0; border-bottom:3px solid #1a6496; padding-bottom:15px;">
+                            <!-- <img t-if="doc.company_id.logo"
+                                 t-att-src="'/web/image/res.company/%s/logo' % doc.company_id.id"
+                                 style="max-height:50px;"/> -->
+                            <div style="text-align:center; flex:1;">
+                                <h2 style="margin:0; color:#1a6496; font-size:20px; text-transform:uppercase;">
+                                    Contrat de mission
+                                </h2>
+                                <p style="margin:4px 0 0 0; color:#555; font-size:12px;">
+                                    <span t-field="doc.name"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- INFORMATIONS GÉNÉRALES -->
+                        <div style="background:#1a6496; color:white; padding:6px 12px; margin-bottom:0;
+                                    font-weight:bold; font-size:12px; text-transform:uppercase; letter-spacing:1px;">
+                            Informations générales
+                        </div>
+                        <table class="table table-sm table-bordered" style="margin-top:0; margin-bottom:20px;">
+                            <tbody>
+                                <tr>
+                                    <td style="width:25%; background:#f9f9f9;">
+                                        <strong>Client</strong>
+                                    </td>
+                                    <td style="width:25%;">
+                                        <div style="margin-bottom:8px;">
+                                            <div><strong><span t-field="doc.partner_id"/></strong></div>
+                                            <div style="font-size:11px; color:#555; margin-top:2px; line-height:1.4;">
+                                                <t t-if="doc.partner_id.street">
+                                                    <span t-field="doc.partner_id.street"/><br/>
+                                                </t>
+                                                <t t-if="doc.partner_id.zip or doc.partner_id.city">
+                                                    <span t-if="doc.partner_id.zip"><span t-field="doc.partner_id.zip"/></span>
+                                                    <span t-if="doc.partner_id.city"><span t-field="doc.partner_id.city"/></span><br/>
+                                                </t>
+                                                <t t-if="doc.partner_id.country_id">
+                                                    <span t-field="doc.partner_id.country_id.name"/>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="width:25%; background:#f9f9f9;">
+                                        <strong>Référence commande</strong>
+                                    </td>
+                                    <td style="width:25%;">
+                                        <span t-field="doc.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="background:#f9f9f9;">
+                                        <strong>Prestataire</strong>
+                                    </td>
+                                    <td>
+                                        <div style="margin-bottom:8px;">
+                                            <div><strong><span t-field="doc.company_id.name"/></strong></div>
+                                            <div style="font-size:11px; color:#555; margin-top:2px; line-height:1.4;">
+                                                <t t-if="doc.company_id.street">
+                                                    <span t-field="doc.company_id.street"/><br/>
+                                                </t>
+                                                <t t-if="doc.company_id.zip or doc.company_id.city">
+                                                    <span t-if="doc.company_id.zip"><span t-field="doc.company_id.zip"/></span>
+                                                    <span t-if="doc.company_id.city"><span t-field="doc.company_id.city"/></span><br/>
+                                                </t>
+                                                <t t-if="doc.company_id.country_id">
+                                                    <span t-field="doc.company_id.country_id.name"/>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="background:#f9f9f9;">
+                                        <strong>Lieu d'exécution</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.mission_location"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="background:#f9f9f9;">
+                                        <strong>Objet de la mission</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <span t-field="doc.mission_object"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="background:#f9f9f9;">
+                                        <strong>Date de début</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.contract_start_date"/>
+                                    </td>
+                                    <td style="background:#f9f9f9;">
+                                        <strong>Date de fin</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.contract_end_date"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- CLAUSES FINANCIÈRES -->
+                        <div style="background:#1a6496; color:white; padding:6px 12px; margin-bottom:0;
+                                    font-weight:bold; font-size:12px; text-transform:uppercase; letter-spacing:1px;">
+                            Conditions financières
+                        </div>
+                        <table class="table table-sm table-bordered" style="margin-top:0; margin-bottom:20px;">
+                            <tbody>
+                                <tr>
+                                    <td style="width:25%; background:#f9f9f9;">
+                                        <strong>Modalités de règlement</strong>
+                                    </td>
+                                    <td style="width:75%;">
+                                        <span t-field="doc.payment_terms_desc"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="background:#f9f9f9;">
+                                        <strong>Préavis de résiliation (jours)</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.termination_notice"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- CLAUSES SPÉCIFIQUES -->
+                        <div style="background:#1a6496; color:white; padding:6px 12px; margin-bottom:0;
+                                    font-weight:bold; font-size:12px; text-transform:uppercase; letter-spacing:1px;">
+                            Clauses spécifiques et obligations
+                        </div>
+                        <div style="border:1px solid #ddd; padding:10px; margin-top:0; min-height:120px;">
+                            <div t-field="doc.specific_clauses"/>
+                        </div>
+
+                        <!-- SIGNATURES -->
+                        <div style="background:#1a6496; color:white; padding:6px 12px; margin-top:25px; margin-bottom:20px;
+                                    font-weight:bold; font-size:12px; text-transform:uppercase; letter-spacing:1px;">
+                            Signatures
+                        </div>
+                        <div style="display:flex; justify-content:space-around; margin-top:40px;">
+                            <div style="text-align:center; width:40%;">
+                                <div style="border-bottom:1px solid #333; margin-bottom:8px; height:50px;"></div>
+                                <strong>Le Client</strong>
+                                <p style="color:#555; font-size:11px;">
+                                    <span t-field="doc.partner_id"/>
+                                </p>
+                            </div>
+                            <div style="text-align:center; width:40%;">
+                                <div style="border-bottom:1px solid #333; margin-bottom:8px; height:50px;"></div>
+                                <strong>Le Prestataire</strong>
+                                <p style="color:#555; font-size:11px;">
+                                    <span t-field="doc.company_id.name"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- FOOTER -->
+                        <div style="position:fixed; bottom:0; left:0; right:0; border-top:2px solid #1a6496;
+                                    padding:8px 20px; display:flex; justify-content:space-between; align-items:center;
+                                    font-size:10px; color:#888;">
+                            <span>Contrat de mission — <span t-field="doc.name"/></span>
+                            <span t-field="doc.company_id.name"/>
+                        </div>
+
+                    </div>
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_mission_contract_print" model="ir.actions.report">
+        <field name="name">Contrat de mission</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">mission_contract.report_mission_contract_document</field>
+        <field name="report_file">mission_contract.report_mission_contract_document</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

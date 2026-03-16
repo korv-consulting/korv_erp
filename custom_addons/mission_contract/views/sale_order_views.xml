@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Bouton contrat de mission sur le bon d'une misssion -->
+    <record id="view_order_form_inherit_mission_contract" model="ir.ui.view">
+        <field name="name">sale.order.form.mission_contract</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <!-- Bouton d'impression du contrat de mission
+                     Visible uniquement si la commande est confirmée et marquée comme contrat de mission -->
+                <button
+                    name="action_print_contract"
+                    type="object"
+                    string="Imprimer le contrat de mission"
+                    class="btn-secondary"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
